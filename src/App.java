@@ -20,7 +20,7 @@ public class App {
         //设置窗体的标题属性
         jf.setTitle("MeetingManager");
         //设置窗体的大小属性
-        jf.setSize(800,600);
+        jf.setSize(1200,900);
         //设置窗体的位置属性
         jf.setLocation(400,200);
         //设置窗体关闭时退出程序
