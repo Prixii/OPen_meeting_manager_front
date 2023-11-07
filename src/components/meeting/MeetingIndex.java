@@ -31,6 +31,7 @@ public class MeetingIndex extends JPanel {
 
     Component unavailableListBuilder() {
         Box column = Box.createVerticalBox();
+        column.setAlignmentY(TOP_ALIGNMENT);
         JLabel label = new JLabel("———— History ————");
         label.setFont(FontData.body);
         label.setHorizontalAlignment(SwingConstants.LEFT);
@@ -41,6 +42,11 @@ public class MeetingIndex extends JPanel {
 
     void testDataGenerator() {
         meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
+        meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
+        meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
+        meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
+        meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
+
         meetings.add(new Meeting(1,"2",2,0,1,"a","d"));
         meetings.add(new Meeting(1,"2",2,0,1,"a","d"));
         refreshMeetings();
