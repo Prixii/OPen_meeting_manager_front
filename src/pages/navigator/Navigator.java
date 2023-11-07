@@ -1,5 +1,6 @@
 package pages.navigator;
 
+import State.NavigationState;
 import components.navigator.NavigatorItem;
 import components.navigator.PageView;
 
@@ -10,6 +11,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class Navigator extends JPanel {
+
 
     private Component navigator() {
         JPanel navigatorPanel = new JPanel();

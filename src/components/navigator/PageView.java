@@ -1,12 +1,32 @@
 package components.navigator;
 
+import State.NavigationState;
+import entity.enums.PageIndex;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class PageView extends JPanel {
+    private final NavigationState navigationState;
+    CardLayout layout;
+
+
+    void setIndexListener() {
+        navigationState.addPropertyChangeListener(evt -> {
+            if (evt.getOldValue() != evt.getNewValue() ){
+                System.out.println("switch!" + evt.getNewValue());
+                layout.show(this, evt.getNewValue().toString());
+            }
+        });
+
+    }
+
     public PageView() {
+        navigationState = NavigationState.getInstance();
+        setIndexListener();
+
         setPreferredSize(new Dimension(900, 700));
-        CardLayout layout = new CardLayout();
+        layout = new CardLayout();
         setLayout(layout);
 
         //创建用于显示的面板
@@ -18,8 +38,8 @@ public class PageView extends JPanel {
         jPanel2.add(new JLabel("第二个card"));
         jPanel3.add(new JLabel("第三个card"));
 
-        add(jPanel1);
-        add(jPanel2);
-        add(jPanel3);
+        add(PageIndex.MEETING_LIST.toString(), jPanel1);
+        add(PageIndex.ORGANIZATION_LIST.toString(), jPanel2);
+        add(PageIndex.INVITATION_LIST.toString(), jPanel3);
     }
 }

@@ -1,6 +1,8 @@
 package components.navigator;
 
 
+import State.NavigationState;
+import entity.enums.PageIndex;
 import util.FontData;
 
 import javax.swing.*;
@@ -10,6 +12,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class NavigatorItem extends JPanel {
+    private final NavigationState navigationState;
 
     private Component buttonBuilder(JButton functionButton) {
         JPanel buttonPanel = new JPanel();
@@ -30,6 +33,7 @@ public class NavigatorItem extends JPanel {
     private Component meetingButtonBuilder() {
         JButton button =  new JButton("会议列表");
         button.addActionListener(action -> {
+            navigationState.setIndex(PageIndex.MEETING_LIST);
             System.out.println("click!");
         });
         return buttonBuilder(button);
@@ -38,6 +42,7 @@ public class NavigatorItem extends JPanel {
     private Component groupButtonBuilder() {
         JButton button =  new JButton("组织列表");
         button.addActionListener(action -> {
+            navigationState.setIndex(PageIndex.ORGANIZATION_LIST);
             System.out.println("group!");
         });
         return buttonBuilder(button);
@@ -46,6 +51,7 @@ public class NavigatorItem extends JPanel {
     private Component inviteListButtonBuilder() {
         JButton button =  new JButton("邀请列表");
         button.addActionListener(action -> {
+            navigationState.setIndex(PageIndex.INVITATION_LIST);
             System.out.println("inviteList!");
         });
         return buttonBuilder(button);
@@ -60,6 +66,8 @@ public class NavigatorItem extends JPanel {
     }
 
     public NavigatorItem() {
+        navigationState = NavigationState.getInstance();
+
         setLayout(new GridLayout(10,1));
         setPreferredSize(new Dimension(280, 670));
         setBackground(Color.lightGray);
