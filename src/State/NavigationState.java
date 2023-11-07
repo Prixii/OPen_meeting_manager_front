@@ -19,21 +19,11 @@ public class NavigationState {
 
     public static NavigationState getInstance() { return INSTANCE; }
 
-    public void setIndex(PageIndex index) {
-        PageIndex old = this.index;
-        this.index = index;
-        firePropertyChange("changeIndex", old, index);
-    }
-
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener){
-        listeners.addPropertyChangeListener(listener);
-    }
-
-    protected void firePropertyChange(String prop, Object oldValue, Object newValue) {
+    public void firePropertyChange(String prop, Object oldValue, Object newValue) {
         listeners.firePropertyChange(prop, oldValue, newValue);
     }
 
