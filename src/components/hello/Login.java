@@ -23,6 +23,20 @@ public class Login extends JPanel {
         return label;
     }
 
+    Component registerButtonBuilder() {
+        var row = Box.createHorizontalBox();
+        var button = new JButton("没有账号？点我注册");
+        button.addActionListener(e -> {
+            helloBloc.toRegisterPage();
+        });
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        row.add(new Container());
+        row.add(button);
+        return row;
+    }
+
     Component formBuilder() {
         Box row = Box.createHorizontalBox();
         Box column = Box.createVerticalBox();
@@ -36,7 +50,9 @@ public class Login extends JPanel {
         column.add(phoneBox);
         column.add(new SizedBox(400, 25));
         column.add(passwordBox);
-        column.add(new SizedBox(400, 25));
+        column.add(new SizedBox(400, 10));
+        column.add(registerButtonBuilder());
+        column.add(new SizedBox(400, 5));
 
         row.add(new SizedBox(40, 200));
         row.add(column);

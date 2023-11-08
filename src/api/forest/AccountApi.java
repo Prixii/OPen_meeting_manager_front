@@ -10,7 +10,6 @@ import com.dtflys.forest.callback.OnSuccess;
 import util.Result;
 
 import java.util.List;
-import java.util.Objects;
 
 public interface AccountApi extends BaseApi {
     @Get("/account/list")
@@ -26,7 +25,7 @@ public interface AccountApi extends BaseApi {
         url = "/account/register",
         async = true
     )
-    void register(@Body RegisterBody body, OnSuccess<String > onSuccess);
+    void register(@JSONBody RegisterBody body, OnSuccess<Result<Integer> > onSuccess);
 
     @Get(
         url = "/account/search",

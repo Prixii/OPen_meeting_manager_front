@@ -1,10 +1,7 @@
 package pages.hello;
 
-
-import bloc.HelloBloc;
 import components.hello.Login;
 import components.hello.Register;
-import state.GlobalState;
 import state.HelloState;
 
 import javax.swing.*;
@@ -12,7 +9,6 @@ import java.awt.*;
 import java.util.Objects;
 
 public class Hello extends JPanel {
-    private final HelloBloc helloBloc;
     private final HelloState helloState;
     CardLayout cardLayout;
 
@@ -27,7 +23,6 @@ public class Hello extends JPanel {
     }
 
     public Hello(){
-        helloBloc = HelloBloc.getInstance();
         helloState = HelloState.getInstance();
 
         cardLayout = new CardLayout();
