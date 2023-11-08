@@ -22,7 +22,7 @@ public interface InvitationApi extends BaseApi {
         url = "/invitation/list",
         async = true
     )
-    void getList(@Query Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
+    void getList(@Query("account") Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
 
     @Post(
         url = "/invitation/accept",

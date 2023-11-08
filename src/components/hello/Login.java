@@ -46,6 +46,9 @@ public class Login extends JPanel {
         passwordBox = new PlaceholderTextField("Password");
         passwordBox.setFont(FontData.BODY);
 
+        phoneBox.setText("13626825377");
+        passwordBox.setText("123456");
+
         column.add(new SizedBox(400, 25));
         column.add(phoneBox);
         column.add(new SizedBox(400, 25));

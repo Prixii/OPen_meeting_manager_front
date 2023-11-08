@@ -15,5 +15,5 @@ public class RequestController {
     public static AccountApi accountApi() { return accountApiImpl; }
     public static InvitationApi invitationAPi() { return invitationApiImpl; }
     public static MeetingApi meetingApi() { return meetingApiImpl; }
-    private static OrganizationApi organizationApi() { return organizationApiImpl; }
+    public static OrganizationApi organizationApi() { return organizationApiImpl; }
 }

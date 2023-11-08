@@ -1,15 +1,15 @@
-package components.meeting;
+package components.organization;
 
-import entity.Meeting;
+import entity.Organization;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class MeetingItem extends JPanel {
+public class OrganizationItem extends JPanel {
     private GridBagLayout layout;
-    private Meeting meeting;
-    private  JPanel panel;
+    private Organization organization;
+    private JPanel panel;
 
     private void panelBuilder() {
         panel = new JPanel();
@@ -21,11 +21,11 @@ public class MeetingItem extends JPanel {
     }
 
     private void contentBuilder() {
-        panel.add(new JLabel(meeting.getTitle()));
+        panel.add(new JLabel(organization.getName()));
     }
 
-    public MeetingItem(Meeting meeting) {
-        this.meeting = meeting;
+    public OrganizationItem(Organization organization) {
+        this.organization = organization;
         layout = new GridBagLayout();
         setLayout(layout);
         setPreferredSize(new Dimension(430, 80));

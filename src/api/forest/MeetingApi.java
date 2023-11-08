@@ -33,11 +33,11 @@ public interface MeetingApi extends BaseApi {
         url = "/meeting/list",
         async = true
     )
-    void getList(@Query Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
+    void getList(@Query("account") Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
 
     @Get(
         url = "/meeting/manage",
         async = true
     )
-    void manage(@Query Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
+    void manage(@Query("account") Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
 }

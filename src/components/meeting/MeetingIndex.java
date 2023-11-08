@@ -4,6 +4,7 @@ import entity.Meeting;
 import util.FontData;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,8 @@ public class MeetingIndex extends JPanel {
         column.add(availableListBuilder());
         column.add(unavailableListBuilder());
 
-        JScrollPane scrollPane = new JScrollPane(column, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scrollPane = new JScrollPane(column, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBorder(new EmptyBorder(0,0,0,0));
         scrollPane.setPreferredSize(new Dimension(900, 700));
         add(scrollPane);
     }

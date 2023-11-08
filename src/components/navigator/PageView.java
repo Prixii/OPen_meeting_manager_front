@@ -2,6 +2,7 @@ package components.navigator;
 
 import bloc.NavigationBloc;
 import components.meeting.MeetingIndex;
+import components.organization.OrganizationIndex;
 import entity.enums.PageIndex;
 import state.NavigationState;
 
@@ -33,15 +34,11 @@ public class PageView extends JPanel {
         layout = new CardLayout();
         setLayout(layout);
 
-        //创建用于显示的面板
-        JPanel jPanel2 = new JPanel();
         JPanel jPanel3 = new JPanel();
-        //在每个字面板插入标签
-        jPanel2.add(new JLabel("第二个card"));
         jPanel3.add(new JLabel("第三个card"));
 
         add(PageIndex.MEETING_LIST.toString(), new MeetingIndex());
-        add(PageIndex.ORGANIZATION_LIST.toString(), jPanel2);
+        add(PageIndex.ORGANIZATION_LIST.toString(), new OrganizationIndex());
         add(PageIndex.INVITATION_LIST.toString(), jPanel3);
     }
 }

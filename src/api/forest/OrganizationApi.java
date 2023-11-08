@@ -3,6 +3,7 @@ package api.forest;
 import api.body.organization.*;
 import com.dtflys.forest.annotation.*;
 import com.dtflys.forest.callback.OnSuccess;
+import entity.Organization;
 import util.Result;
 
 import java.util.List;
@@ -36,17 +37,17 @@ public interface OrganizationApi extends BaseApi{
         url = "/organization/list",
         async = true
     )
-    void getList(@Query Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
+    void getList(@Query("account") Integer account, OnSuccess<Result<List<Organization>>> onSuccess);
 
     @Get(
         url = "/organization/manage",
         async = true
     )
-    void manage(@Query Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
+    void manage(@Query("account") Integer account, OnSuccess<Result<List<Organization>>> onSuccess);
 
     @Get(
         url = "/organization/member",
         async = true
     )
-    void member(@Query Integer creator, @Query Integer organization, OnSuccess<Result<List<MemberResponse>>> onSuccess);
+    void member(@Query("creator") Integer creator, @Query("organization") Integer organization, OnSuccess<Result<List<MemberResponse>>> onSuccess);
 }

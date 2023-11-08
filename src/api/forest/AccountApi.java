@@ -31,5 +31,5 @@ public interface AccountApi extends BaseApi {
         url = "/account/search",
         async = true
     )
-    Result<SearchResponse> search(@Query String phone, OnSuccess<String > onSuccess);
+    Result<SearchResponse> search(@Query("phone") String phone, OnSuccess<String > onSuccess);
 }
