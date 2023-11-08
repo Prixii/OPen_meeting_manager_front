@@ -9,7 +9,8 @@ public class App {
 
     public static void main(String[] args) {
         App swingApp = new App();
-        swingApp.showHello();
+//        swingApp.showHello();
+        swingApp.showMain();
     }
 
     public void showHello() {

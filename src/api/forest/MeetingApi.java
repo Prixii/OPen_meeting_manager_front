@@ -9,20 +9,19 @@ import util.Result;
 
 import java.util.List;
 
-@Address(host = AddressData.HOST + "/meeting", port = AddressData.PORT)
-public interface MeetingApi {
-    @Post("/cancel")
+public interface MeetingApi extends BaseApi {
+    @Post("/meeting/cancel")
     Result<Object> cancel(@Body CancelBody body);
 
-    @Post("/create")
+    @Post("/meeting/create")
     Result<Integer> create(@Body CreateBody body);
 
-    @Post("/finish")
+    @Post("/meeting/finish")
     Result<Object> finish(@Body FinishBody body);
 
-    @Get("/list")
+    @Get("/meeting/list")
     Result<List<ListResponse>> getList(@Query Integer account);
 
-    @Get("/manage")
+    @Get("/meeting/manage")
     Result<List<ListResponse>> manage(@Query Integer account);
 }

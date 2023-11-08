@@ -9,17 +9,16 @@ import util.Result;
 
 import java.util.List;
 
-@Address(host = AddressData.HOST + "/account", port = AddressData.PORT)
-public interface AccountApi {
-    @Get("/list")
+public interface AccountApi extends BaseApi {
+    @Get("/account/list")
     Result<List<TestData>> testList();
 
-    @Post("/login")
+    @Post("/account/login")
     Result<Object> login(@Body LoginBody body);
 
-    @Post("/register")
+    @Post("/account/register")
     Result<Object> register(@Body RegisterBody body);
 
-    @Get("/search")
+    @Get("/account/search")
     Result<SearchResponse> search(@Query String phone);
 }

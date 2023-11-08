@@ -6,26 +6,25 @@ import util.Result;
 
 import java.util.List;
 
-@Address(host = AddressData.HOST + "/organization", port = AddressData.PORT)
-public interface OrganizationApi {
-    @Post("/create")
+public interface OrganizationApi extends BaseApi{
+    @Post("/organization/create")
     Result<Integer> create(@Body CreateBody body);
 
-    @Post("/dissolve")
+    @Post("/organization/dissolve")
     Result<Object> dissolve(@Body DissolveBody body);
 
-    @Post("/kick")
+    @Post("/organization/kick")
     Result<Object> kick(@Body KickBody body);
 
-    @Post("/leave")
+    @Post("/organization/leave")
     Result<Object> leave(@Body LeaveBody body);
 
-    @Get("/list")
+    @Get("/organization/list")
     Result<List<ListResponse>> getList(@Query Integer account);
 
-    @Get("/manage")
+    @Get("/organization/manage")
     Result<List<ListResponse>> manage(@Query Integer account);
 
-    @Get("/member")
+    @Get("/organization/member")
     Result<List<MemberResponse>> member(@Query Integer creator, @Query Integer organization);
 }

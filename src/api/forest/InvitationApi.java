@@ -9,19 +9,18 @@ import util.Result;
 
 import java.util.List;
 
-@Address(host = AddressData.HOST + "/invitation", port = AddressData.PORT)
-public interface InvitationApi {
+public interface InvitationApi extends BaseApi {
 
-    @Post("/create")
+    @Post("/invitation/create")
     Result<Object> create(@Body CreateBody body);
 
-    @Get("/list")
+    @Get("/invitation/list")
     Result<List<ListResponse>> getList(@Query Integer account);
 
-    @Post("/accept")
+    @Post("/invitation/accept")
     Result<Object> accept(@Body AcceptBody body);
 
-    @Post("/refuse")
+    @Post("/invitation/refuse")
     Result<Object> refuse(@Body RefuseBody body);
 
 }
