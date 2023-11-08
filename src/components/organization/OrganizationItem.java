@@ -9,12 +9,10 @@ import util.FontData;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Map;
 
 public class OrganizationItem extends JPanel {
     private Organization organization;
     private JPanel panel;
-    private Map<Integer, Component> itemMap;
     private final OrganizationBloc organizationBloc;
 
 
@@ -53,25 +51,30 @@ public class OrganizationItem extends JPanel {
         deleteButton.setOpaque(false);
         deleteButton.setContentAreaFilled(false);
         deleteButton.setBorderPainted(false);
-        deleteButton.addActionListener(e -> onDeleteOrganization());
+        deleteButton.addActionListener(e -> onDissolvePressed());
 
-        var memberButton = new JButton();
-        memberButton.setPreferredSize(new Dimension(30, 30));
-        memberButton.setIcon(IconAssets.EVERY_USER);
-        memberButton.setOpaque(false);
-        memberButton.setContentAreaFilled(false);
-        memberButton.setBorderPainted(false);
+        var detailButton = new JButton();
+        detailButton.setPreferredSize(new Dimension(30, 30));
+        detailButton.setIcon(IconAssets.EVERY_USER);
+        detailButton.setOpaque(false);
+        detailButton.setContentAreaFilled(false);
+        detailButton.setBorderPainted(false);
+        detailButton.addActionListener(e -> onDetailPressed());
 
-        buttonGroup.add(memberButton);
+        buttonGroup.add(detailButton);
         buttonGroup.add(Box.createHorizontalStrut(10));
         buttonGroup.add(deleteButton);
         return buttonGroup;
     }
 
-    private void onDeleteOrganization() {
+    private void onDetailPressed() {
+        organizationBloc.toOrganizationDetail(organization.getId());
+    }
+
+    private void onDissolvePressed() {
         int option = JOptionPane.showOptionDialog(
                 null,
-                "这是一个警告对话框",
+                "确认要解散该团队吗",
                 "警告",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,

@@ -67,4 +67,12 @@ public class OrganizationBloc extends Bloc{
             }
         });
     }
+
+    public void toOrganizationDetail(Integer organization) {
+        state.firePropertyChange("toDetail", null, organization);
+    }
+
+    public void toOverView() {
+        state.firePropertyChange("toOverView", null, null);
+    }
 }
