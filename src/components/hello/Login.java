@@ -1,4 +1,4 @@
-package pages.hello;
+package components.hello;
 
 import javax.swing.*;
 
@@ -8,7 +8,7 @@ public class Login extends JPanel {
 
     public Login() {
         button = new JButton("Click");
-        label = new JLabel("Label!");
+        label = new JLabel("LOGIN");
         add(button);
         add(label);
     }

@@ -1,16 +1,17 @@
-package State;
+package state;
 
 import entity.enums.PageIndex;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class NavigationState {
+public class NavigationState extends State {
     private static final NavigationState INSTANCE = new NavigationState();
     private PageIndex index;
-    PropertyChangeSupport listeners;
 
     private NavigationState() {
         listeners = new PropertyChangeSupport(this);
@@ -18,13 +19,5 @@ public class NavigationState {
     }
 
     public static NavigationState getInstance() { return INSTANCE; }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        listeners.addPropertyChangeListener(listener);
-    }
-
-    public void firePropertyChange(String prop, Object oldValue, Object newValue) {
-        listeners.firePropertyChange(prop, oldValue, newValue);
-    }
 
 }

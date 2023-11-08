@@ -1,21 +1,16 @@
 package bloc;
 
-import State.NavigationState;
+import state.NavigationState;
 import entity.enums.PageIndex;
 
-import java.beans.PropertyChangeListener;
-
-public class NavigationBloc {
+public class NavigationBloc extends Bloc {
     private final NavigationState state;
     private static final NavigationBloc INSTANCE = new NavigationBloc();
     public static NavigationBloc getInstance() { return INSTANCE; }
 
     private NavigationBloc() {
-        state = NavigationState.getInstance();
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        state.addPropertyChangeListener(listener);
+        super(NavigationState.getInstance());
+        state = (NavigationState) super.state;
     }
 
     public void setIndex(PageIndex index) {

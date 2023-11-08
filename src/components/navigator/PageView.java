@@ -1,6 +1,5 @@
 package components.navigator;
 
-import State.NavigationState;
 import bloc.NavigationBloc;
 import components.meeting.MeetingIndex;
 import entity.enums.PageIndex;

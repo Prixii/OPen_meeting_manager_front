@@ -1,13 +1,10 @@
 package pages.navigator;
 
-import State.NavigationState;
 import components.navigator.NavigatorItem;
 import components.navigator.PageView;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class Navigator extends JPanel {
@@ -25,7 +22,6 @@ public class Navigator extends JPanel {
     }
 
     private Component page() {
-        EmptyBorder border = new EmptyBorder(10,10,10,10);
         JPanel pagePanel = new JPanel();
         pagePanel.setPreferredSize(new Dimension(900, 700));
 

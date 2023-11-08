@@ -1,7 +1,6 @@
 package components.navigator;
 
 
-import State.NavigationState;
 import bloc.NavigationBloc;
 import entity.enums.PageIndex;
 import util.FontData;
