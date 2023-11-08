@@ -2,29 +2,51 @@ package api.forest;
 
 import api.body.organization.*;
 import com.dtflys.forest.annotation.*;
+import com.dtflys.forest.callback.OnSuccess;
 import util.Result;
 
 import java.util.List;
 
 public interface OrganizationApi extends BaseApi{
-    @Post("/organization/create")
-    Result<Integer> create(@Body CreateBody body);
+    @Post(
+        url = "/organization/create",
+        async = true
+    )
+    void create(@JSONBody CreateBody body, OnSuccess<Result<Integer>> onSuccess);
 
-    @Post("/organization/dissolve")
-    Result<Object> dissolve(@Body DissolveBody body);
+    @Post(
+        url = "/organization/dissolve",
+        async = true
+    )
+    void dissolve(@JSONBody DissolveBody body, OnSuccess<Result<Object>> onSuccess);
 
-    @Post("/organization/kick")
-    Result<Object> kick(@Body KickBody body);
+    @Post(
+        url = "/organization/kick",
+        async = true
+    )
+    void kick(@JSONBody KickBody body, OnSuccess<Result<Object>> onSuccess);
 
-    @Post("/organization/leave")
-    Result<Object> leave(@Body LeaveBody body);
+    @Post(
+        url = "/organization/leave",
+        async = true
+    )
+    void leave(@JSONBody LeaveBody body, OnSuccess<Result<Object>> onSuccess);
 
-    @Get("/organization/list")
-    Result<List<ListResponse>> getList(@Query Integer account);
+    @Get(
+        url = "/organization/list",
+        async = true
+    )
+    void getList(@Query Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
 
-    @Get("/organization/manage")
-    Result<List<ListResponse>> manage(@Query Integer account);
+    @Get(
+        url = "/organization/manage",
+        async = true
+    )
+    void manage(@Query Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
 
-    @Get("/organization/member")
-    Result<List<MemberResponse>> member(@Query Integer creator, @Query Integer organization);
+    @Get(
+        url = "/organization/member",
+        async = true
+    )
+    void member(@Query Integer creator, @Query Integer organization, OnSuccess<Result<List<MemberResponse>>> onSuccess);
 }
