@@ -17,8 +17,8 @@ public class OrganizationState extends State{
     private static final OrganizationState INSTANCE = new OrganizationState();
 
     private OrganizationState() {
-        organizationsJoined = new ArrayList<Organization>();
-        organizationsManaged = new ArrayList<Organization>();
+        organizationsJoined = new ArrayList<>();
+        organizationsManaged = new ArrayList<>();
     }
 
     public static OrganizationState getInstance() { return INSTANCE; }

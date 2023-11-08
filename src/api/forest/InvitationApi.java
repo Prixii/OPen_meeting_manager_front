@@ -1,11 +1,11 @@
 package api.forest;
 
-import api.Response.invitation.ListResponse;
 import api.body.invitation.AcceptBody;
 import api.body.invitation.CreateBody;
 import api.body.invitation.RefuseBody;
 import com.dtflys.forest.annotation.*;
 import com.dtflys.forest.callback.OnSuccess;
+import entity.Invitation;
 import util.Result;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface InvitationApi extends BaseApi {
         url = "/invitation/list",
         async = true
     )
-    void getList(@Query("account") Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
+    void getList(@Query("account") Integer account, OnSuccess<Result<List<Invitation>>> onSuccess);
 
     @Post(
         url = "/invitation/accept",

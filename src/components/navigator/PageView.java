@@ -1,6 +1,7 @@
 package components.navigator;
 
 import bloc.NavigationBloc;
+import components.invitation.InvitationIndex;
 import components.meeting.MeetingIndex;
 import components.organization.OrganizationIndex;
 import entity.enums.PageIndex;
@@ -34,11 +35,8 @@ public class PageView extends JPanel {
         layout = new CardLayout();
         setLayout(layout);
 
-        JPanel jPanel3 = new JPanel();
-        jPanel3.add(new JLabel("第三个card"));
-
         add(PageIndex.MEETING_LIST.toString(), new MeetingIndex());
         add(PageIndex.ORGANIZATION_LIST.toString(), new OrganizationIndex());
-        add(PageIndex.INVITATION_LIST.toString(), jPanel3);
+        add(PageIndex.INVITATION_LIST.toString(), new InvitationIndex());
     }
 }
