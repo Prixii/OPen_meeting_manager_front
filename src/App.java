@@ -1,20 +1,30 @@
 import lombok.var;
 import pages.hello.Hello;
 import pages.navigator.Navigator;
+import state.GlobalState;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class App {
+    private GlobalState globalState;
+    JFrame helloFrame;
 
-    public static void main(String[] args) {
-        App swingApp = new App();
-//        swingApp.showHello();
-        swingApp.showMain();
+    void setListener() {
+        setLoginStateListener();
+    }
+
+    void setLoginStateListener() {
+        globalState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "loginSucceed")) { return; }
+            helloFrame.dispose();
+            showMain();
+        });
     }
 
     public void showHello() {
-        var helloFrame = new JFrame();
+        helloFrame = new JFrame();
         helloFrame.setTitle("Login MeetingManager");
         helloFrame.setSize(400, 1200);
         helloFrame.setLocation(400, 200);
@@ -41,6 +51,17 @@ public class App {
 
         mainFrame.pack();
         mainFrame.setVisible(true);
+    }
+
+    public App() {
+        globalState = GlobalState.getInstance();
+        setListener();
+    }
+
+    public static void main(String[] args) {
+        App swingApp = new App();
+        swingApp.showHello();
+//        swingApp.showMain();
     }
 
 }

@@ -24,7 +24,7 @@ public class NavigatorItem extends JPanel {
         functionButton.setPreferredSize(new Dimension(280, 60));
         functionButton.setBorder(roundBorder);
         functionButton.setBackground(Color.gray);
-        functionButton.setFont(FontData.body);
+        functionButton.setFont(FontData.BODY);
         functionButton.setFocusPainted(false);
         buttonPanel.add(functionButton);
         return  buttonPanel;

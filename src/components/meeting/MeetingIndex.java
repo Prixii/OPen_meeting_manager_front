@@ -33,7 +33,7 @@ public class MeetingIndex extends JPanel {
         Box column = Box.createVerticalBox();
         column.setAlignmentY(TOP_ALIGNMENT);
         JLabel label = new JLabel("———— History ————");
-        label.setFont(FontData.body);
+        label.setFont(FontData.BODY);
         label.setHorizontalAlignment(SwingConstants.LEFT);
         column.add(label);
         column.add(itemListCreator(unavailableMeetings));
