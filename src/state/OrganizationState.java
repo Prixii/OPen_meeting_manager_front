@@ -22,4 +22,8 @@ public class OrganizationState extends State{
     }
 
     public static OrganizationState getInstance() { return INSTANCE; }
+
+    public void addOrganizationManaged(Organization organization) {
+        organizationsManaged.add(0, organization);
+    }
 }

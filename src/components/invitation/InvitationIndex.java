@@ -1,6 +1,7 @@
 package components.invitation;
 
 import bloc.InvitationBloc;
+import components.ListTitle;
 import entity.Invitation;
 import state.InvitationState;
 
@@ -55,6 +56,7 @@ public class InvitationIndex extends JPanel {
         setPreferredSize(new Dimension(900, 700));
 
         Box column = Box.createVerticalBox();
+        column.add(new ListTitle("我的邀请", null));
         column.add(itemListCreator());
 
         JScrollPane scrollPane = new JScrollPane(column, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

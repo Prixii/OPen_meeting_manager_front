@@ -3,14 +3,14 @@ package components.organization;
 import bloc.OrganizationBloc;
 import components.ListTitle;
 import entity.Organization;
+import lombok.var;
 import state.OrganizationState;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 public class OrganizationIndex extends JPanel {
     OrganizationBloc organizationBloc;
@@ -19,15 +19,30 @@ public class OrganizationIndex extends JPanel {
     List<Organization> organizationsJoined;
     List<Organization> organizationsManaged;
 
+    Map<Integer, Component> itemMap;
+
+    JPanel joinedPanel;
+    JPanel managedPanel;
+
+
     void setListener() {
         setOrganizationsJoinedListener();
         setOrganizationsManagedListener();
+        setCreateListener();
+        setDissolveListener();
     }
 
     void setOrganizationsJoinedListener() {
         organizationState.addPropertyChangeListener(evt -> {
             if (!Objects.equals(evt.getPropertyName(), "joinedList")) { return; }
             organizationsJoined = (List<Organization>) evt.getNewValue();
+            joinedPanel.removeAll();
+            for (Organization item:
+                    organizationsJoined) {
+                var newItem = new OrganizationItem(item);
+                itemMap.put(item.getId(), newItem);
+                joinedPanel.add(newItem);
+            }
         });
     }
 
@@ -35,54 +50,105 @@ public class OrganizationIndex extends JPanel {
         organizationState.addPropertyChangeListener(evt -> {
             if (!Objects.equals(evt.getPropertyName(), "managedList")) { return; }
             organizationsManaged= (List<Organization>) evt.getNewValue();
+            managedPanel.removeAll();
+            for (Organization item:
+                 organizationsManaged) {
+                var newItem = new OrganizationItem(item);
+                itemMap.put(item.getId(), newItem);
+                managedPanel.add(newItem);
+            }
+        });
+    }
+
+    void setCreateListener() {
+        organizationState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "create")) {return;}
+            var newOrganization =(Organization) evt.getNewValue();
+            organizationsManaged.add(0,newOrganization );
+            var newItem = new OrganizationItem(newOrganization);
+            itemMap.put(newOrganization.getId(), newItem);
+            managedPanel.add(newItem, 0);
+
+            managedPanel.repaint();
+            managedPanel.revalidate();
+        });
+    }
+
+    void setDissolveListener() {
+        organizationState.addPropertyChangeListener(evt -> {
+            System.out.println("Try target!");
+            if (!Objects.equals(evt.getPropertyName(), "dissolve")) {return;}
+            var target = itemMap.get((Integer) evt.getNewValue());
+            if (target != null) {
+                System.out.println("target!");
+                managedPanel.remove(target);
+            }
+
+            managedPanel.repaint();
+            managedPanel.revalidate();
         });
     }
 
 
-    Component itemListCreator(List<Organization> items) {
+    Component itemListCreator( JPanel listPanel, List<Organization> items) {
         FlowLayout layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
-        JPanel listPanel = new JPanel();
         listPanel.setLayout(layout);
         listPanel.setPreferredSize(new Dimension(getWidth(),  80 + 80 * items.size() / 2));
         for (Organization organization: items) {
-            listPanel.add(new OrganizationItem(organization));
+            var newItem = new OrganizationItem(organization);
+            itemMap.put(organization.getId(), newItem);
+            listPanel.add(newItem);
         }
         return listPanel;
     }
 
-    Component managedListBuilder() {
+    Component joinedBuilder() {
+        joinedPanel = new JPanel();
         Box column = Box.createVerticalBox();
         column.setAlignmentY(TOP_ALIGNMENT);
 
         column.add(new ListTitle("加入的团队",null));
-        column.add(itemListCreator(organizationsManaged));
+        column.add(itemListCreator(joinedPanel, organizationsJoined));
         return column;
     }
 
-    Component joinedListBuilder() {
+    Component managedBuilder() {
+        managedPanel = new JPanel();
         Box column = Box.createVerticalBox();
         column.setAlignmentY(TOP_ALIGNMENT);
 
-        column.add(new ListTitle("我的团队", new JButton("新建团队")));
-        column.add(itemListCreator(organizationsJoined));
+        var createOrganization = new JButton("新建团队");
+        createOrganization.addActionListener(e -> onCreateOrganization());
+
+        column.add(new ListTitle("我的团队", createOrganization));
+        column.add(itemListCreator(managedPanel, organizationsManaged));
 
         return column;
+    }
+
+    private void onCreateOrganization() {
+        String input = JOptionPane.showInputDialog(this, "团队名:");
+        if (input != null) {
+            organizationBloc.createOrganization(input);
+        }
     }
 
     public OrganizationIndex() {
         organizationBloc = OrganizationBloc.getInstance();
         organizationState = OrganizationState.getInstance();
-        organizationsJoined = new ArrayList<Organization>();
-        organizationsManaged = new ArrayList<Organization>();
+        organizationsJoined = new ArrayList<>();
+        organizationsManaged = new ArrayList<>();
+        itemMap = new HashMap<>();
+
         setListener();
         organizationBloc.getOrganizations();
 
         setPreferredSize(new Dimension(900, 700));
 
         Box column = Box.createVerticalBox();
-        column.add(managedListBuilder());
-        column.add(joinedListBuilder());
+        column.add(joinedBuilder());
+        column.add(managedBuilder());
 
         JScrollPane scrollPane = new JScrollPane(column, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));

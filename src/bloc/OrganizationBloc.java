@@ -1,9 +1,14 @@
 package bloc;
 
 import api.RequestController;
+import api.body.organization.CreateBody;
+import api.body.organization.DissolveBody;
+import entity.Organization;
 import lombok.var;
 import state.GlobalState;
 import state.OrganizationState;
+
+import java.util.Collections;
 
 public class OrganizationBloc extends Bloc{
     private static final OrganizationBloc INSTANCE = new OrganizationBloc();
@@ -18,22 +23,48 @@ public class OrganizationBloc extends Bloc{
 
     public static OrganizationBloc getInstance() { return INSTANCE; }
 
+    private int account() {
+        return globalState.getUser().getId();
+    }
+
     public void getOrganizations() {
-        var accountId = globalState.getUser().getId();
-        RequestController.organizationApi().manage(accountId, (result, res, rsp) -> {
-            System.out.println(result);
+        RequestController.organizationApi().manage(account(), (result, res, rsp) -> {
+            System.out.println("managed"+result);
             if (result.getCode() == 200) {
-                state.setOrganizationsManaged(result.getData());
+                var records = result.getData();
+                Collections.reverse(records);
+                state.setOrganizationsManaged(records);
                 state.firePropertyChange("managedList", null, result.getData());
             }
         });
-        RequestController.organizationApi().getList(accountId, (result, res, rsp) -> {
-            System.out.println(result);
+        RequestController.organizationApi().getList(account(), (result, res, rsp) -> {
+            System.out.println("joined"+result);
             if (result.getCode() == 200) {
-                state.setOrganizationsJoined(result.getData());
+                var records = result.getData();
+                Collections.reverse(records);
+                state.setOrganizationsJoined(records);
                 state.firePropertyChange("joinedList", null, result.getData());
             }
         });
     }
 
+    public void createOrganization(String name) {
+        RequestController.organizationApi().create(new CreateBody(account(), name), (result, res, rsp) -> {
+            if (result.getCode() == 200) {
+                var organizationId = result.getData();
+                var newOrganization = new Organization(organizationId, account(), name);
+                state.addOrganizationManaged(newOrganization);
+                state.firePropertyChange("create", null, newOrganization);
+            }
+        });
+    }
+
+    public void dissolveOrganization(Integer organization) {
+        RequestController.organizationApi().dissolve(new DissolveBody(account(), organization), (result, rep, rsp) -> {
+            System.out.println(result);
+            if (result.getCode() == 200) {
+                state.firePropertyChange("dissolve", null, organization);
+            }
+        });
+    }
 }
