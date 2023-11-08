@@ -1,9 +1,9 @@
 package components.organization;
 
 import bloc.OrganizationBloc;
+import components.ListTitle;
 import entity.Organization;
 import state.OrganizationState;
-import util.FontData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -52,17 +52,21 @@ public class OrganizationIndex extends JPanel {
     }
 
     Component managedListBuilder() {
-        return itemListCreator(organizationsManaged);
+        Box column = Box.createVerticalBox();
+        column.setAlignmentY(TOP_ALIGNMENT);
+
+        column.add(new ListTitle("加入的团队",null));
+        column.add(itemListCreator(organizationsManaged));
+        return column;
     }
 
     Component joinedListBuilder() {
         Box column = Box.createVerticalBox();
         column.setAlignmentY(TOP_ALIGNMENT);
-        JLabel label = new JLabel("———— Managing ————");
-        label.setFont(FontData.BODY);
-        label.setHorizontalAlignment(SwingConstants.LEFT);
-        column.add(label);
+
+        column.add(new ListTitle("我的团队", new JButton("新建团队")));
         column.add(itemListCreator(organizationsJoined));
+
         return column;
     }
 

@@ -14,7 +14,6 @@ public class Navigator extends JPanel {
         JPanel navigatorPanel = new JPanel();
 
         navigatorPanel.setPreferredSize(new Dimension(300, 700));
-        navigatorPanel.setBorder( new EmptyBorder(10,10,10,10));
         navigatorPanel.setBackground(Color.lightGray);
         navigatorPanel.add(new NavigatorItem());
 

@@ -1,5 +1,6 @@
 package components.meeting;
 
+import components.ListTitle;
 import entity.Meeting;
 import util.FontData;
 
@@ -27,39 +28,31 @@ public class MeetingIndex extends JPanel {
     }
 
     Component availableListBuilder() {
-        return itemListCreator(availableMeetings);
+        Box column = Box.createVerticalBox();
+        column.setAlignmentY(TOP_ALIGNMENT);
+        column.add(new ListTitle("会议列表", new JButton("发起会议")));
+        column.add(itemListCreator(availableMeetings));
+        return column;
     }
 
     Component unavailableListBuilder() {
         Box column = Box.createVerticalBox();
         column.setAlignmentY(TOP_ALIGNMENT);
-        JLabel label = new JLabel("———— History ————");
-        label.setFont(FontData.BODY);
-        label.setHorizontalAlignment(SwingConstants.LEFT);
-        column.add(label);
+        column.add(new ListTitle("历史会议", null));
         column.add(itemListCreator(unavailableMeetings));
         return column;
     }
 
     void testDataGenerator() {
-        meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
-        meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
-        meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
-        meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
-        meetings.add(new Meeting(1,"1",2,0,0,"a","d"));
+        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
+        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
+        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
+        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
+        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
 
-        meetings.add(new Meeting(1,"2",2,0,1,"a","d"));
-        meetings.add(new Meeting(1,"2",2,0,1,"a","d"));
+        meetings.add(new Meeting(1, "2", 2, 0, 1, "a", "d"));
+        meetings.add(new Meeting(1, "2", 2, 0, 1, "a", "d"));
         refreshMeetings();
-    }
-
-    Component addComponent() {
-        JButton jb = new JButton("添加");
-        jb.addActionListener(e -> {
-//            listPanel.add(new MeetingItem(new Meeting(1,"1",2,0,1,"a","d")));
-//            updateUI();
-        });
-        return jb;
     }
 
     void refreshMeetings() {
