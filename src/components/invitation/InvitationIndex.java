@@ -1,6 +1,7 @@
 package components.invitation;
 
 import bloc.InvitationBloc;
+import bloc.OrganizationBloc;
 import components.ListTitle;
 import components.organization.MemberItem;
 import entity.Invitation;
@@ -22,6 +23,7 @@ public class InvitationIndex extends JPanel {
     Component placeHolder;
     InvitationBloc invitationBloc;
     InvitationState invitationState;
+    OrganizationBloc organizationBloc;
 
     Component invitationListBuilder() {
         listView = Box.createVerticalBox();
@@ -86,12 +88,17 @@ public class InvitationIndex extends JPanel {
                 listView.remove(targetItem);
                 CommonUtil.repaint(listView);
             }
+
+            if ((Boolean) evt.getOldValue()) {
+                organizationBloc.getJoinedOrganizations();
+            }
         });
     }
 
     public InvitationIndex() {
         invitations = new ArrayList<>();
         itemMap = new HashMap<>();
+        organizationBloc = OrganizationBloc.getInstance();
         invitationBloc = InvitationBloc.getInstance();
         invitationState = InvitationState.getInstance();
         setLayout(new BorderLayout());

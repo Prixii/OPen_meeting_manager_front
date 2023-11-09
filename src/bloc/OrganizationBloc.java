@@ -4,6 +4,7 @@ import api.RequestController;
 import api.body.organization.CreateBody;
 import api.body.organization.DissolveBody;
 import api.body.organization.KickBody;
+import api.body.organization.LeaveBody;
 import entity.Organization;
 import lombok.var;
 import state.GlobalState;
@@ -30,6 +31,11 @@ public class OrganizationBloc extends Bloc{
     }
 
     public void getOrganizations() {
+        getManagedOrganizations();
+        getJoinedOrganizations();
+    }
+
+    public void getManagedOrganizations() {
         RequestController.organizationApi().manage(account(), (result, res, rsp) -> {
             System.out.println("managed"+result);
             if (result.getCode() == 200) {
@@ -39,6 +45,9 @@ public class OrganizationBloc extends Bloc{
                 state.firePropertyChange("managedList", null, result.getData());
             }
         });
+    }
+
+    public void getJoinedOrganizations() {
         RequestController.organizationApi().getList(account(), (result, res, rsp) -> {
             System.out.println("joined"+result);
             if (result.getCode() == 200) {
@@ -90,9 +99,15 @@ public class OrganizationBloc extends Bloc{
         RequestController.organizationApi().kick(new KickBody(account, organization, account()),(result, res, rsp) -> {
             System.out.println(result);
             if (result.getCode() == 200) {
-
                 state.firePropertyChange("remove", null, account);
             }
+        });
+    }
+
+    public void leave(Integer organization) {
+        RequestController.organizationApi().leave(new LeaveBody(account(), organization), (result, res, rsp) -> {
+            System.out.println(result);
+            state.firePropertyChange("leave", null, organization);
         });
     }
 

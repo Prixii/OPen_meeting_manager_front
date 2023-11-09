@@ -86,7 +86,19 @@ public class OrganizationItem extends JPanel {
     }
 
     private void onExitPressed() {
+        int option = JOptionPane.showOptionDialog(
+                null,
+                "确认要离开该团队吗",
+                "警告",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                new String[]{"确认", "取消"},
+                "确认");
 
+        if (option == JOptionPane.YES_OPTION) {
+            organizationBloc.leave(organization.getId());
+        }
     }
 
     public OrganizationItem(Organization organization) {

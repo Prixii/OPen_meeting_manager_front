@@ -6,6 +6,7 @@ import api.body.invitation.RefuseBody;
 import com.dtflys.forest.annotation.*;
 import com.dtflys.forest.callback.OnSuccess;
 import entity.Invitation;
+import entity.Organization;
 import util.Result;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface InvitationApi extends BaseApi {
         url = "/invitation/accept",
         async = true
     )
-    void accept(@JSONBody AcceptBody body, OnSuccess<Result<Object>> onSuccess);
+    void accept(@JSONBody AcceptBody body, OnSuccess<Result<Organization>> onSuccess);
 
     @Post(
         url = "/invitation/refuse",

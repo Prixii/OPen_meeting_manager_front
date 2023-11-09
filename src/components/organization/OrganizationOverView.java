@@ -5,10 +5,12 @@ import components.ListTitle;
 import entity.Organization;
 import lombok.var;
 import state.OrganizationState;
+import util.CommonUtil;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class OrganizationOverView extends JPanel {
         setOrganizationsManagedListener();
         setCreateListener();
         setDissolveListener();
+        setOrganizationsLeaveListener();
     }
 
     void setOrganizationsJoinedListener() {
@@ -43,6 +46,16 @@ public class OrganizationOverView extends JPanel {
                 itemMap.put(item.getId(), newItem);
                 joinedPanel.add(newItem);
             }
+        });
+    }
+    void setOrganizationsLeaveListener() {
+        organizationState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "leave")) { return; }
+            var organizationId = (Integer) evt.getNewValue();
+            organizationsJoined.removeIf(organization -> Objects.equals(organization.getId(), organizationId));
+            var target = itemMap.get(organizationId);
+            joinedPanel.remove(target);
+            CommonUtil.repaint(joinedPanel);
         });
     }
 

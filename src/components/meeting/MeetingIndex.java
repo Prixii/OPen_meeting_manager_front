@@ -13,7 +13,6 @@ import java.util.List;
 public class MeetingIndex extends JPanel {
     List<Meeting> meetings;
     List<Meeting> availableMeetings;
-    List<Meeting> unavailableMeetings;
 
     Component itemListCreator(List<Meeting> items) {
         FlowLayout layout = new FlowLayout();
@@ -35,13 +34,6 @@ public class MeetingIndex extends JPanel {
         return column;
     }
 
-    Component unavailableListBuilder() {
-        Box column = Box.createVerticalBox();
-        column.setAlignmentY(TOP_ALIGNMENT);
-        column.add(new ListTitle("历史会议", null));
-        column.add(itemListCreator(unavailableMeetings));
-        return column;
-    }
 
     void testDataGenerator() {
         meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
@@ -57,13 +49,10 @@ public class MeetingIndex extends JPanel {
 
     void refreshMeetings() {
         availableMeetings.clear();
-        unavailableMeetings.clear();
         for (Meeting meeting:
              meetings) {
             if (meeting.available()) {
                 availableMeetings.add(meeting);
-            } else {
-                unavailableMeetings.add(meeting);
             }
         }
     }
@@ -71,13 +60,11 @@ public class MeetingIndex extends JPanel {
     public MeetingIndex() {
         meetings = new ArrayList<>();
         availableMeetings = new ArrayList<>();
-        unavailableMeetings = new ArrayList<>();
 
         testDataGenerator();
 
         Box column = Box.createVerticalBox();
         column.add(availableListBuilder());
-        column.add(unavailableListBuilder());
 
         JScrollPane scrollPane = new JScrollPane(column, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));
