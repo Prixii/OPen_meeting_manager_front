@@ -2,66 +2,93 @@ package components.invitation;
 
 import bloc.InvitationBloc;
 import components.ListTitle;
+import components.organization.MemberItem;
 import entity.Invitation;
+import entity.Member;
+import lombok.var;
 import state.InvitationState;
+import util.CommonUtil;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 public class InvitationIndex extends JPanel {
+    List<Invitation> invitations;
+    Map<Integer, Component> itemMap;
+    Box listView;
+    Component placeHolder;
     InvitationBloc invitationBloc;
     InvitationState invitationState;
 
-    List<Invitation> invitations;
+    Component invitationListBuilder() {
+        listView = Box.createVerticalBox();
+        listView.setAlignmentY(SwingConstants.TOP);
+        for (Invitation invitation:
+            invitations) {
+            listView.add(new InvitationItem(invitation));
+        }
+
+        if (invitations.size() <= 8) {
+            placeHolder = Box.createVerticalStrut(650 - invitations.size() * 80);
+            listView.add(placeHolder);
+        } else {
+            placeHolder = Box.createVerticalStrut(0);
+            listView.add(placeHolder);
+        }
+
+        return listView;
+    }
 
     void setListener() {
         setInvitationsListener();
     }
 
-
     void setInvitationsListener() {
         invitationState.addPropertyChangeListener(evt -> {
             if (!Objects.equals(evt.getPropertyName(), "invitationList")) { return; }
+            listView.removeAll();
             invitations = (List<Invitation>) evt.getNewValue();
+            itemMap.clear();
+            for (Invitation invitation:
+                 invitations) {
+                var item = new InvitationItem(invitation);
+                listView.add(item);
+                itemMap.put(invitation.getId(), item);
+            }
+
+            if (invitations.size() <= 8) {
+                placeHolder = Box.createVerticalStrut(650 - invitations.size() * 80);
+                listView.add(placeHolder);
+            } else {
+                placeHolder = Box.createVerticalStrut(0);
+                listView.add(placeHolder);
+            }
+
+            CommonUtil.repaint(this);
+            CommonUtil.repaint(listView);
         });
     }
 
-
-    Component itemListCreator() {
-        FlowLayout layout = new FlowLayout();
-        layout.setAlignment(FlowLayout.LEFT);
-        JPanel listPanel = new JPanel();
-        listPanel.setLayout(layout);
-        listPanel.setPreferredSize(new Dimension(getWidth(),  80 + 80 * invitations.size() / 2));
-        for (Invitation invitation: invitations) {
-            listPanel.add(new InvitationItem(invitation));
-        }
-        return listPanel;
-    }
-
-
     public InvitationIndex() {
         invitations = new ArrayList<>();
+        itemMap = new HashMap<>();
         invitationBloc = InvitationBloc.getInstance();
         invitationState = InvitationState.getInstance();
-
+        setLayout(new BorderLayout());
         setListener();
 
         invitationBloc.getInvitations();
 
         setPreferredSize(new Dimension(900, 700));
 
-        Box column = Box.createVerticalBox();
-        column.add(new ListTitle("我的邀请", null));
-        column.add(itemListCreator());
-
-        JScrollPane scrollPane = new JScrollPane(column, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scrollPane = new JScrollPane(invitationListBuilder(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-        scrollPane.setPreferredSize(new Dimension(900, 700));
-        add(scrollPane);
+        scrollPane.setPreferredSize(new Dimension(890, 650));
+
+        add(new ListTitle("我的邀请", null), BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
     }
 }

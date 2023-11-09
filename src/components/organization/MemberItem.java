@@ -3,6 +3,7 @@ package components.organization;
 import assets.IconAssets;
 import entity.Member;
 import lombok.var;
+import util.CommonUtil;
 import util.FontData;
 
 import javax.swing.*;
@@ -42,15 +43,7 @@ public class MemberItem extends JPanel {
     }
 
     Component kickButtonBuilder() {
-        var kickButton = new JButton();
-        kickButton.setIcon(IconAssets.DELETE);
-        kickButton.setPreferredSize(new Dimension(30, 30));
-        kickButton.setOpaque(false);
-        kickButton.setOpaque(false);
-        kickButton.setContentAreaFilled(false);
-        kickButton.setBorderPainted(false);
-        kickButton.setFocusPainted(false);
-
+        var kickButton = CommonUtil.IconButton(IconAssets.DELETE);
         kickButton.addActionListener(e -> onKickPressed());
         return kickButton;
     }

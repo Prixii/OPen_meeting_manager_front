@@ -1,10 +1,12 @@
 package components.organization;
 
 import assets.IconAssets;
+import bloc.InvitationBloc;
 import bloc.OrganizationBloc;
 import components.PlaceholderTextField;
 import entity.Organization;
 import lombok.var;
+import state.InvitationState;
 import state.OrganizationState;
 import util.CommonUtil;
 import util.FontData;
@@ -21,6 +23,8 @@ public class OrganizationDetail extends JPanel {
     JLabel nameLabel;
     private final OrganizationBloc organizationBloc;
     private final OrganizationState organizationState;
+    private final InvitationBloc invitationBloc;
+    private final InvitationState invitationState;
     Organization organization = new Organization(-1,-1,"");
 
     void setListener() {
@@ -37,14 +41,7 @@ public class OrganizationDetail extends JPanel {
     Component backButtonBuilder() {
         var panel = new Panel();
 
-        var backButton = new JButton(IconAssets.ARROW_LEFT);
-        backButton.setPreferredSize(new Dimension(30,30));
-        backButton.addActionListener(e -> organizationBloc.toOverView());
-        backButton.setOpaque(false);
-        backButton.setOpaque(false);
-        backButton.setContentAreaFilled(false);
-        backButton.setFocusPainted(false);
-        backButton.setBorder(new EmptyBorder(0,0,0,0));
+        var backButton = CommonUtil.IconButton(IconAssets.ARROW_LEFT);
         var flowLayout = new FlowLayout();
         flowLayout.setAlignment(FlowLayout.LEFT);
         panel.setLayout(flowLayout);
@@ -67,15 +64,10 @@ public class OrganizationDetail extends JPanel {
         var row = Box.createHorizontalBox();
         row.setBorder(new EmptyBorder(0,0,0,30));
 
-        var inviteButton = new JButton();
-        inviteButton.setIcon(IconAssets.PEOPLE_PLUS);
+        var inviteButton = CommonUtil.IconButton(IconAssets.PEOPLE_PLUS);
         inviteButton.setPreferredSize(new Dimension(60, 30));
-        inviteButton.setOpaque(false);
-        inviteButton.setOpaque(false);
-        inviteButton.setContentAreaFilled(false);
-        inviteButton.setBorderPainted(false);
-        inviteButton.setFocusPainted(false);
-        inviteButton.setBorder(new EmptyBorder(0,20,0,20));
+
+        inviteButton.addActionListener(e -> onInvitePressed());
 
         var addMemberLabel = new Label("Add Member:");
         addMemberLabel.setFont(FontData.BODY);
@@ -91,9 +83,17 @@ public class OrganizationDetail extends JPanel {
         return invitationPanel;
     }
 
+    void onInvitePressed() {
+        if (phoneBox.getText().isEmpty()) { return; }
+        invitationBloc.onInvite(organization.getId(), phoneBox.getText());
+    }
+
     OrganizationDetail() {
         organizationState = OrganizationState.getInstance();
         organizationBloc = OrganizationBloc.getInstance();
+        invitationBloc = InvitationBloc.getInstance();
+        invitationState = InvitationState.getInstance();
+
         setListener();
 
         setPreferredSize(new Dimension(900, 700));

@@ -4,16 +4,20 @@ import assets.IconAssets;
 import bloc.OrganizationBloc;
 import entity.Organization;
 import lombok.var;
+import state.GlobalState;
+import util.CommonUtil;
 import util.FontData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Objects;
 
 public class OrganizationItem extends JPanel {
     private Organization organization;
     private JPanel panel;
     private final OrganizationBloc organizationBloc;
+    private final GlobalState globalState;
 
 
     private void panelBuilder() {
@@ -42,30 +46,23 @@ public class OrganizationItem extends JPanel {
     }
 
     Component buttonGroupBuilder() {
-
         var buttonGroup = Box.createHorizontalBox();
-        var deleteButton = new JButton();
-        deleteButton.setIcon(IconAssets.DELETE);
-        deleteButton.setPreferredSize(new Dimension(30, 30));
-        deleteButton.setOpaque(false);
-        deleteButton.setOpaque(false);
-        deleteButton.setContentAreaFilled(false);
-        deleteButton.setBorderPainted(false);
-        deleteButton.setFocusPainted(false);
+        if (Objects.equals(organization.getCreator(), globalState.getUser().getId())){
+            var deleteButton = CommonUtil.IconButton(IconAssets.DELETE);
+            deleteButton.addActionListener(e -> onDissolvePressed());
 
-        deleteButton.addActionListener(e -> onDissolvePressed());
+            var detailButton = CommonUtil.IconButton(IconAssets.EVERY_USER);
+            detailButton.addActionListener(e -> onDetailPressed());
 
-        var detailButton = new JButton();
-        detailButton.setPreferredSize(new Dimension(30, 30));
-        detailButton.setIcon(IconAssets.EVERY_USER);
-        detailButton.setOpaque(false);
-        detailButton.setContentAreaFilled(false);
-        detailButton.setBorderPainted(false);
-        detailButton.addActionListener(e -> onDetailPressed());
+            buttonGroup.add(detailButton);
+            buttonGroup.add(Box.createHorizontalStrut(10));
+            buttonGroup.add(deleteButton);
+        } else {
+            var logoutButton = CommonUtil.IconButton(IconAssets.LOGOUT);
+            logoutButton.addActionListener(e -> onExitPressed());
+            buttonGroup.add(logoutButton);
+        }
 
-        buttonGroup.add(detailButton);
-        buttonGroup.add(Box.createHorizontalStrut(10));
-        buttonGroup.add(deleteButton);
         return buttonGroup;
     }
 
@@ -89,7 +86,12 @@ public class OrganizationItem extends JPanel {
         }
     }
 
+    private void onExitPressed() {
+
+    }
+
     public OrganizationItem(Organization organization) {
+        globalState = GlobalState.getInstance();
         organizationBloc = OrganizationBloc.getInstance();
         this.organization = organization;
         setPreferredSize(new Dimension(430, 80));

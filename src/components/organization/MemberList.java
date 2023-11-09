@@ -1,21 +1,38 @@
 package components.organization;
 
-
 import entity.Member;
+import lombok.var;
+import state.InvitationState;
+import util.CommonUtil;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class MemberList extends JPanel {
     List<Member> memberList;
     Map<Integer, Component> itemMap;
     Component placeHolder;
     Box listView;
+    InvitationState invitationState;
+
+    void setListener() {
+        setRemoveInvitationListener();
+    }
+
+    void setRemoveInvitationListener() {
+        invitationState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "remove")) { return; }
+            var targetId = (Integer) evt.getNewValue();
+            var targetItem = itemMap.get(targetId);
+            if (targetItem != null) {
+                listView.remove(targetItem);
+                CommonUtil.repaint(listView);
+            }
+        });
+    }
 
     Component memberListBuilder() {
         int size = 8;
@@ -36,8 +53,10 @@ public class MemberList extends JPanel {
     }
 
     public MemberList() {
+        invitationState = InvitationState.getInstance();
         memberList = new ArrayList<>();
         itemMap = new HashMap<>();
+        setListener();
         setPreferredSize(new Dimension(870, 420));
         JScrollPane scrollPane = new JScrollPane(memberListBuilder(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));
