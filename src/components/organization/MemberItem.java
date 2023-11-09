@@ -1,6 +1,7 @@
 package components.organization;
 
 import assets.IconAssets;
+import bloc.OrganizationBloc;
 import entity.Member;
 import lombok.var;
 import util.CommonUtil;
@@ -11,9 +12,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class MemberItem extends JPanel {
-    private GridBagLayout layout;
     private Member member;
+
+    private GridBagLayout layout;
     private JPanel panel;
+    private final OrganizationBloc organizationBloc;
+
 
     private void panelBuilder() {
         panel = new JPanel();
@@ -49,11 +53,13 @@ public class MemberItem extends JPanel {
     }
 
     void onKickPressed() {
-
+        organizationBloc.kick(member.getOrganization(), member.getAccount());
     }
 
     public MemberItem(Member member) {
         this.member = member;
+
+        organizationBloc = OrganizationBloc.getInstance();
         layout = new GridBagLayout();
         setLayout(layout);
         setPreferredSize(new Dimension(840, 80));

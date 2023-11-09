@@ -3,6 +3,7 @@ package api.forest;
 import api.body.organization.*;
 import com.dtflys.forest.annotation.*;
 import com.dtflys.forest.callback.OnSuccess;
+import entity.Member;
 import entity.Organization;
 import util.Result;
 
@@ -49,5 +50,5 @@ public interface OrganizationApi extends BaseApi{
         url = "/organization/member",
         async = true
     )
-    void member(@Query("creator") Integer creator, @Query("organization") Integer organization, OnSuccess<Result<List<MemberResponse>>> onSuccess);
+    void member(@Query("creator") Integer creator, @Query("organization") Integer organization, OnSuccess<Result<List<Member>>> onSuccess);
 }

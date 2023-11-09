@@ -14,14 +14,13 @@ import java.awt.*;
 import java.util.Objects;
 
 public class OrganizationItem extends JPanel {
-    private Organization organization;
-    private JPanel panel;
+    private final Organization organization;
     private final OrganizationBloc organizationBloc;
     private final GlobalState globalState;
 
 
     private void panelBuilder() {
-        panel = new JPanel();
+        JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(new EmptyBorder(10,10,10,10));
         panel.setPreferredSize(new Dimension(410, 70));

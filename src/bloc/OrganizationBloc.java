@@ -3,6 +3,7 @@ package bloc;
 import api.RequestController;
 import api.body.organization.CreateBody;
 import api.body.organization.DissolveBody;
+import api.body.organization.KickBody;
 import entity.Organization;
 import lombok.var;
 import state.GlobalState;
@@ -73,11 +74,22 @@ public class OrganizationBloc extends Bloc{
 
     public void toOrganizationDetail(Integer organization) {
         Organization target = state.findOrganization(organization);
-        state.firePropertyChange("toDetail", null, target);
+        RequestController.organizationApi().member(account(),organization, (result, res, rsp) -> {
+            System.out.println(result);
+            if (result.getCode() == 200) {
+                state.firePropertyChange("toDetail", result.getData(), target);
+            }
+        });
     }
 
     public void toOverView() {
         state.firePropertyChange("toOverView", null, null);
+    }
+
+    public void kick(Integer organization, Integer account) {
+        RequestController.organizationApi().kick(new KickBody(account, organization, account()),(result, res, rsp) -> {
+//            TODO
+        });
     }
 
 

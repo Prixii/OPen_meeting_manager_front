@@ -77,7 +77,6 @@ public class Register extends JPanel {
         button.setPreferredSize(new Dimension(400, 60));
         button.setFocusPainted(false);
         button.addActionListener(e ->{
-            System.out.println(nameBox.getText());
             if (Objects.equals(nameBox.getText(), "Name") ||nameBox.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "非法的姓名.", "错误", JOptionPane.INFORMATION_MESSAGE);
                 return;
@@ -86,7 +85,7 @@ public class Register extends JPanel {
                 JOptionPane.showMessageDialog(null, "两次输入密码不同.", "错误", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            helloBloc.register(nameBox.getName(), phoneBox.getText(), passwordBox.getText());
+            helloBloc.register(nameBox.getText(), phoneBox.getText(), passwordBox.getText());
         });
         return button;
     }
