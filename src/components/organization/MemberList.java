@@ -31,7 +31,11 @@ public class MemberList extends JPanel {
             var targetItem = itemMap.get(targetId);
             if (targetItem != null) {
                 listView.remove(targetItem);
+                if (itemMap.size() < 5 ) {
+                    listView.add(Box.createVerticalStrut(80));
+                }
                 CommonUtil.repaint(listView);
+                CommonUtil.repaint(this);
             }
         });
     }

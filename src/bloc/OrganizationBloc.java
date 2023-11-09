@@ -88,7 +88,11 @@ public class OrganizationBloc extends Bloc{
 
     public void kick(Integer organization, Integer account) {
         RequestController.organizationApi().kick(new KickBody(account, organization, account()),(result, res, rsp) -> {
-//            TODO
+            System.out.println(result);
+            if (result.getCode() == 200) {
+
+                state.firePropertyChange("remove", null, account);
+            }
         });
     }
 
