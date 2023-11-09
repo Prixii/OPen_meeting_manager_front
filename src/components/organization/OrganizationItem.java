@@ -51,6 +51,8 @@ public class OrganizationItem extends JPanel {
         deleteButton.setOpaque(false);
         deleteButton.setContentAreaFilled(false);
         deleteButton.setBorderPainted(false);
+        deleteButton.setFocusPainted(false);
+
         deleteButton.addActionListener(e -> onDissolvePressed());
 
         var detailButton = new JButton();

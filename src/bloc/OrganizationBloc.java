@@ -9,6 +9,7 @@ import state.GlobalState;
 import state.OrganizationState;
 
 import java.util.Collections;
+import java.util.Objects;
 
 public class OrganizationBloc extends Bloc{
     private static final OrganizationBloc INSTANCE = new OrganizationBloc();
@@ -63,13 +64,15 @@ public class OrganizationBloc extends Bloc{
         RequestController.organizationApi().dissolve(new DissolveBody(account(), organization), (result, rep, rsp) -> {
             System.out.println(result);
             if (result.getCode() == 200) {
+                state.removeOrganization(organization);
                 state.firePropertyChange("dissolve", null, organization);
             }
         });
     }
 
     public void toOrganizationDetail(Integer organization) {
-        state.firePropertyChange("toDetail", null, organization);
+        Organization target = state.findOrganization(organization);
+        state.firePropertyChange("toDetail", null, target);
     }
 
     public void toOverView() {
