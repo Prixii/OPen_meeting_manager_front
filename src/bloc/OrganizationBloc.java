@@ -52,6 +52,7 @@ public class OrganizationBloc extends Bloc{
     public void createOrganization(String name) {
         RequestController.organizationApi().create(new CreateBody(account(), name), (result, res, rsp) -> {
             if (result.getCode() == 200) {
+                System.out.println("创建成功" + result);
                 var organizationId = result.getData();
                 var newOrganization = new Organization(organizationId, account(), name);
                 state.addOrganizationManaged(newOrganization);

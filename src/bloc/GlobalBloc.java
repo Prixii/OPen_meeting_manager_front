@@ -17,6 +17,7 @@ public class GlobalBloc extends Bloc{
     public void onLoginSucceed(Account account) {
         globalState.setLogin(true);
         globalState.setUser(account);
+        System.out.println("登录成功" + account);
         state.firePropertyChange("loginSucceed",null, null);
     }
 }

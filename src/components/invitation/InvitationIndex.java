@@ -44,6 +44,7 @@ public class InvitationIndex extends JPanel {
 
     void setListener() {
         setInvitationsListener();
+        setRemoveInvitationListener();
     }
 
     void setInvitationsListener() {
@@ -69,6 +70,22 @@ public class InvitationIndex extends JPanel {
 
             CommonUtil.repaint(this);
             CommonUtil.repaint(listView);
+        });
+    }
+
+    void setRemoveInvitationListener() {
+        invitationState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "remove")) { return; }
+            var targetId = (Integer) evt.getNewValue();
+            var targetItem = itemMap.get(targetId);
+            if (targetItem != null) {
+                invitations = invitationState.getInvitations();
+                if (invitations.size() < 8 ) {
+                    listView.add(Box.createVerticalStrut(80));
+                }
+                listView.remove(targetItem);
+                CommonUtil.repaint(listView);
+            }
         });
     }
 

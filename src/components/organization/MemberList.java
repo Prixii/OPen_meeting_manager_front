@@ -2,7 +2,7 @@ package components.organization;
 
 import entity.Member;
 import lombok.var;
-import state.InvitationState;
+import state.OrganizationState;
 import util.CommonUtil;
 
 import javax.swing.*;
@@ -16,14 +16,13 @@ public class MemberList extends JPanel {
     Map<Integer, Component> itemMap;
     Component placeHolder;
     Box listView;
-    InvitationState invitationState;
+    OrganizationState organizationState;
 
     void setListener() {
-        setRemoveInvitationListener();
     }
 
-    void setRemoveInvitationListener() {
-        invitationState.addPropertyChangeListener(evt -> {
+    void setRemoveMemberListener() {
+        organizationState.addPropertyChangeListener(evt -> {
             if (!Objects.equals(evt.getPropertyName(), "remove")) { return; }
             var targetId = (Integer) evt.getNewValue();
             var targetItem = itemMap.get(targetId);
@@ -53,8 +52,8 @@ public class MemberList extends JPanel {
     }
 
     public MemberList() {
-        invitationState = InvitationState.getInstance();
         memberList = new ArrayList<>();
+        organizationState = OrganizationState.getInstance();
         itemMap = new HashMap<>();
         setListener();
         setPreferredSize(new Dimension(870, 420));

@@ -28,20 +28,45 @@ public class OrganizationDetail extends JPanel {
     Organization organization = new Organization(-1,-1,"");
 
     void setListener() {
+        toDetailListener();
+        inviteResultListener();
+    }
+
+    void toDetailListener() {
         organizationState.addPropertyChangeListener(evt -> {
             if (!Objects.equals(evt.getPropertyName(), "toDetail")) { return; }
             organization = (Organization) evt.getNewValue();
             nameLabel.setText(organization.getName());
             CommonUtil.repaint(this);
             CommonUtil.repaint(nameLabel);
-
         });
+    }
+
+    void inviteResultListener() {
+        invitationState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "invite")) { return; }
+            if ((Integer) evt.getOldValue() == 200) {
+                onInviteSucceed();
+            } else {
+                onInviteFailed((String) evt.getNewValue());
+            }
+        });
+    }
+
+    void onInviteSucceed() {
+        JOptionPane.showMessageDialog(null, "Invite succeed", "GREAT!🥰", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    void onInviteFailed(String msg) {
+        JOptionPane.showMessageDialog(null, "Invite failed " + msg, "INFO", JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     Component backButtonBuilder() {
         var panel = new Panel();
 
         var backButton = CommonUtil.IconButton(IconAssets.ARROW_LEFT);
+        backButton.addActionListener(e -> organizationBloc.toOverView());
         var flowLayout = new FlowLayout();
         flowLayout.setAlignment(FlowLayout.LEFT);
         panel.setLayout(flowLayout);

@@ -36,15 +36,22 @@ public class InvitationBloc extends Bloc{
     }
 
     public void onInvite(Integer organization, String phone) {
-        var body = new api.body.invitation.CreateBody(phone, account(), organization);
+        RequestController.invitationAPi().create( new api.body.invitation.CreateBody(phone, account(), organization), (result, res, rsp) -> {
+            if (result.getCode() == 200) {
+                System.out.println(result);
+                state.firePropertyChange("invite", 200, null);
+                return;
+            }
+            state.firePropertyChange("invite", result.getCode(), result.getMsg());
+        });
     }
 
     public void onAccept(Integer invitation) {
         RequestController.invitationAPi().accept(new AcceptBody(account(), invitation), (result, res, rsp) -> {
             System.out.println(result);
             if (result.getCode() == 200) {
-//                TODO
-                state.firePropertyChange("remove", null, invitation);
+                state.removeInvitation(invitation);
+                state.firePropertyChange("remove", true, invitation);
             }
         });
     }
@@ -53,8 +60,8 @@ public class InvitationBloc extends Bloc{
         RequestController.invitationAPi().refuse(new RefuseBody(account(), invitation), (result, res, rsp) -> {
             System.out.println(result);
             if (result.getCode() == 200) {
-//                TODO
-                state.firePropertyChange("remove", null, invitation);
+                state.removeInvitation(invitation);
+                state.firePropertyChange("remove", false, invitation);
             }
         });
     }

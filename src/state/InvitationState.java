@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -19,4 +20,8 @@ public class InvitationState extends State {
     }
 
     public static InvitationState getInstance() { return INSTANCE; }
+
+    public void removeInvitation(Integer id) {
+        invitations.removeIf(invitation -> Objects.equals(invitation.getId(), id));
+    }
 }
