@@ -16,7 +16,7 @@ public class Login extends JPanel {
     private PlaceholderTextField passwordBox;
 
     Component titleBuilder() {
-        JLabel label = new JLabel("登录");
+        JLabel label = new JLabel("Login");
         label.setFont(FontData.TITLE);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setPreferredSize(new Dimension(400, 40));
@@ -25,7 +25,7 @@ public class Login extends JPanel {
 
     Component registerButtonBuilder() {
         var row = Box.createHorizontalBox();
-        var button = new JButton("没有账号？点我注册");
+        var button = new JButton("No account? Register !");
         button.addActionListener(e -> {
             helloBloc.toRegisterPage();
         });
@@ -45,9 +45,6 @@ public class Login extends JPanel {
         phoneBox.setFont(FontData.BODY);
         passwordBox = new PlaceholderTextField("Password");
         passwordBox.setFont(FontData.BODY);
-
-        phoneBox.setText("13626825377");
-        passwordBox.setText("123456");
 
         column.add(new SizedBox(400, 25));
         column.add(phoneBox);

@@ -57,13 +57,13 @@ public class MemberItem extends JPanel {
     void onKickPressed() {
         int option = JOptionPane.showOptionDialog(
                 null,
-                "确认要踢出该成员吗",
-                "警告",
+                "Kick this member?",
+                "Warning",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
                 null,
-                new String[]{"确认", "取消"},
-                "确认");
+                new String[]{"Confirm", "Cancel"},
+                "Cancel");
         if (option == JOptionPane.YES_OPTION ) {
             organizationBloc.kick(member.getOrganization(), member.getAccount());
         }

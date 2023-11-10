@@ -57,7 +57,7 @@ public class MeetingCreator extends JDialog{
                     itemMap.put(member.getAccount(), item);
                     participantListView.add(item);
                     if (participants.size() <= 5) {
-                        participantPlaceHolder = Box.createVerticalStrut(360 - 60 * participants.size());
+                        participantPlaceHolder = Box.createVerticalStrut(310 - 60 * participants.size());
                         participantListView.add(participantPlaceHolder);
                     }
                     CommonUtil.repaint(participantListView);
@@ -76,7 +76,7 @@ public class MeetingCreator extends JDialog{
             participants.remove(accountId);
             participantListView.remove(participantPlaceHolder);
             if (participants.size() <= 5) {
-                participantPlaceHolder = Box.createVerticalStrut(360 - 60 * participants.size());
+                participantPlaceHolder = Box.createVerticalStrut(310 - 60 * participants.size());
                 participantListView.add(participantPlaceHolder);
             }
             CommonUtil.repaint(participantListView);
@@ -173,17 +173,19 @@ public class MeetingCreator extends JDialog{
     Component memberSelector() {
         var panel = new JPanel();
         panel.setPreferredSize(new Dimension(360, 380));
-        panel.setLayout(new BorderLayout());
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        var column = Box.createVerticalBox();
         comboBoxBuilder();
-        panel.add(comboBoxPanel, BorderLayout.NORTH);
+        column.add(comboBoxPanel, BorderLayout.NORTH);
         memberListView = Box.createVerticalBox();
         memberListView.add(new JPanel());
 
         var scrollPane = new JScrollPane(memberListView, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-        scrollPane.setPreferredSize(new Dimension(360, 330));
-        panel.add(scrollPane, BorderLayout.CENTER);
-
+        scrollPane.setPreferredSize(new Dimension(360, 310));
+        column.add(Box.createVerticalStrut(20));
+        column.add(scrollPane, BorderLayout.CENTER);
+        panel.add(column);
         memberListBuilder();
 
         return panel;

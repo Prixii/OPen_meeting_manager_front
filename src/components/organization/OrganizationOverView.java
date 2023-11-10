@@ -147,7 +147,7 @@ public class OrganizationOverView extends JPanel {
 
     private void onCreateOrganization() {
         String input = JOptionPane.showInputDialog(this, "Organization Name:");
-        if (input != null) {
+        if (!input.isEmpty()) {
             organizationBloc.createOrganization(input);
         }
     }
@@ -160,7 +160,6 @@ public class OrganizationOverView extends JPanel {
         itemMap = new HashMap<>();
 
         setListener();
-//        TODO offline
         organizationBloc.getOrganizations();
 
         setPreferredSize(new Dimension(900, 700));

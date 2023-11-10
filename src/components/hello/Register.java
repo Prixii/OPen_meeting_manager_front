@@ -1,8 +1,10 @@
 package components.hello;
 
+import assets.IconAssets;
 import bloc.HelloBloc;
 import components.PlaceholderTextField;
 import lombok.var;
+import util.CommonUtil;
 import util.FontData;
 import util.SizedBox;
 
@@ -19,25 +21,27 @@ public class Register extends JPanel {
     private PlaceholderTextField confirmPasswordBox;
 
     Component titleBuilder() {
-        JLabel label = new JLabel("注册");
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        var row = Box.createHorizontalBox();
+        JLabel label = new JLabel("Register");
         label.setFont(FontData.TITLE);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setPreferredSize(new Dimension(400, 40));
-        return label;
+        row.add(backButtonBuilder());
+        row.add(label);
+        row.add(Box.createHorizontalStrut(40));
+
+        return row;
     }
 
     Component backButtonBuilder() {
-        var row = Box.createHorizontalBox();
-        var button = new JButton("没有账号？点我注册");
-        button.addActionListener(e -> {
+        var backButton = CommonUtil.iconButton(IconAssets.ARROW_LEFT, false);
+        backButton.addActionListener(e -> {
             helloBloc.toLoginPage();
         });
-        button.setOpaque(false);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        row.add(new Container());
-        row.add(button);
-        return row;
+
+        return backButton;
     }
 
     Component formBuilder() {
@@ -78,11 +82,11 @@ public class Register extends JPanel {
         button.setFocusPainted(false);
         button.addActionListener(e ->{
             if (Objects.equals(nameBox.getText(), "Name") ||nameBox.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "非法的姓名.", "错误", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Illegal Name.", "Error", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             if (!Objects.equals(passwordBox.getText(), confirmPasswordBox.getText())) {
-                JOptionPane.showMessageDialog(null, "两次输入密码不同.", "错误", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Please confirm your password.", "Error", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             helloBloc.register(nameBox.getText(), phoneBox.getText(), passwordBox.getText());
@@ -90,11 +94,8 @@ public class Register extends JPanel {
         return button;
     }
 
-
-
     public Register() {
         helloBloc = HelloBloc.getInstance();
-
         setPreferredSize(new Dimension(400, 300));
         helloBloc = HelloBloc.getInstance();
         setLayout(new BorderLayout());

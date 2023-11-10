@@ -76,13 +76,13 @@ public class OrganizationItem extends JPanel {
     private void onDissolvePressed() {
         int option = JOptionPane.showOptionDialog(
                 null,
-                "确认要解散该团队吗",
-                "警告",
+                "Dissolve this organization?",
+                "Warning",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
                 null,
-                new String[]{"确认", "取消"},
-                "确认");
+                new String[]{"Confirm", "Cancel"},
+                "Cancel");
 
         if (option == JOptionPane.YES_OPTION) {
             organizationBloc.dissolveOrganization(organization.getId());
@@ -92,13 +92,13 @@ public class OrganizationItem extends JPanel {
     private void onExitPressed() {
         int option = JOptionPane.showOptionDialog(
                 null,
-                "确认要离开该团队吗",
-                "警告",
+                "Leave this Organization?",
+                "Warning",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE,
                 null,
-                new String[]{"确认", "取消"},
-                "确认");
+                new String[]{"Confirm", "Cancel"},
+                "Cancel");
 
         if (option == JOptionPane.YES_OPTION) {
             organizationBloc.leave(organization.getId());
