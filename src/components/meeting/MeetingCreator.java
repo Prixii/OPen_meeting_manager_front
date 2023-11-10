@@ -262,7 +262,7 @@ public class MeetingCreator extends JDialog{
         organizationState = OrganizationState.getInstance();
 
         setSize(new Dimension(800,520));
-        setLocation(650, 380);
+        setLocationRelativeTo(null);
         setResizable(false);
         setModal(true);
         var layout = new BorderLayout();

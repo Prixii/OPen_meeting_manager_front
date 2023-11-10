@@ -27,7 +27,7 @@ public class App {
         helloFrame = new JFrame();
         helloFrame.setTitle("Login MeetingManager");
         helloFrame.setSize(400, 1200);
-        helloFrame.setLocation(400, 200);
+        helloFrame.setLocationRelativeTo(null);
         helloFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         helloFrame.setResizable(false);
 
@@ -44,7 +44,7 @@ public class App {
 
         mainFrame.setTitle("MeetingManager");
         mainFrame.setSize(1200,900);
-        mainFrame.setLocation(400,200);
+        mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
 
@@ -63,8 +63,8 @@ public class App {
 
     public static void main(String[] args) {
         App swingApp = new App();
-//        swingApp.showHello();
-        swingApp.showMain();
+        swingApp.showHello();
+//        swingApp.showMain();
     }
 
 }

@@ -4,13 +4,11 @@ import api.RequestController;
 import api.body.meeting.CancelBody;
 import api.body.meeting.CreateBody;
 import api.body.meeting.FinishBody;
-import com.sun.org.apache.bcel.internal.generic.IREM;
 import entity.Organization;
 import state.GlobalState;
 import state.MeetingState;
 import state.OrganizationState;
 
-import java.util.Currency;
 import java.util.List;
 import java.util.Objects;
 
