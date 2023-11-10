@@ -1,6 +1,6 @@
 package api.forest;
 
-import api.Response.meeting.ListResponse;
+import api.Response.meeting.MeetingListResponse;
 import api.body.meeting.CancelBody;
 import api.body.meeting.CreateBody;
 import api.body.meeting.FinishBody;
@@ -33,11 +33,11 @@ public interface MeetingApi extends BaseApi {
         url = "/meeting/list",
         async = true
     )
-    void getList(@Query("account") Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
+    void getList(@Query("account") Integer account, OnSuccess<Result<List<MeetingListResponse>>> onSuccess);
 
     @Get(
         url = "/meeting/manage",
         async = true
     )
-    void manage(@Query("account") Integer account, OnSuccess<Result<List<ListResponse>>> onSuccess);
+    void manage(@Query("account") Integer account, OnSuccess<Result<List<MeetingListResponse>>> onSuccess);
 }

@@ -1,74 +1,94 @@
 package components.meeting;
 
+import api.Response.meeting.MeetingListResponse;
+import bloc.MeetingBloc;
 import components.ListTitle;
 import entity.Meeting;
-import util.FontData;
+import lombok.var;
+import state.MeetingState;
+import util.CommonUtil;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class MeetingIndex extends JPanel {
-    List<Meeting> meetings;
-    List<Meeting> availableMeetings;
+    List<MeetingListResponse> meetings;
+    Map<Integer, Component> itemMap;
+    Box listView;
+    Component placeHolder;
 
-    Component itemListCreator(List<Meeting> items) {
-        FlowLayout layout = new FlowLayout();
-        layout.setAlignment(FlowLayout.LEFT);
-        JPanel listPanel = new JPanel();
-        listPanel.setLayout(layout);
-        listPanel.setPreferredSize(new Dimension(getWidth(),  80 + 80 * items.size() / 2));
-        for (Meeting meeting: items) {
-            listPanel.add(new MeetingItem(meeting));
-        }
-        return listPanel;
+    private final MeetingState meetingState;
+    private final MeetingBloc meetingBloc;
+
+    void setListener() {
+        setOnRefreshListener();
     }
 
-    Component availableListBuilder() {
-        Box column = Box.createVerticalBox();
-        column.setAlignmentY(TOP_ALIGNMENT);
-        column.add(new ListTitle("会议列表", new JButton("发起会议")));
-        column.add(itemListCreator(availableMeetings));
-        return column;
+    void setOnRefreshListener() {
+        meetingState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "refresh")) { return; }
+            itemMap.clear();
+            listView.removeAll();
+            meetings = (List<MeetingListResponse>) evt.getNewValue();
+            buildItem();
+        });
     }
 
-
-    void testDataGenerator() {
-        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
-        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
-        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
-        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
-        meetings.add(new Meeting(1, "1", 2, 0, 0, "a", "d"));
-
-        meetings.add(new Meeting(1, "2", 2, 0, 1, "a", "d"));
-        meetings.add(new Meeting(1, "2", 2, 0, 1, "a", "d"));
-        refreshMeetings();
+    Component meetingListBuilder() {
+        listView = Box.createVerticalBox();
+        listView.setAlignmentY(SwingConstants.TOP);
+        buildItem();
+        return listView;
     }
 
-    void refreshMeetings() {
-        availableMeetings.clear();
-        for (Meeting meeting:
-             meetings) {
-            if (meeting.available()) {
-                availableMeetings.add(meeting);
+    void buildItem() {
+        try {
+            for (MeetingListResponse meeting:
+                    meetings) {
+                var item = new MeetingItem(meeting.toMeeting());
+                listView.add(item);
+                itemMap.put(meeting.getId(),item);
             }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
+        if (meetings.size() <= 8) {
+            placeHolder = Box.createVerticalStrut(650 - meetings.size() * 80);
+            listView.add(placeHolder);
+        } else {
+            placeHolder = Box.createVerticalStrut(0);
+            listView.add(placeHolder);
+        }
+        CommonUtil.repaint(listView);
+//        CommonUtil.repaint(scrollPane);
+        CommonUtil.repaint(this);
+
     }
+
 
     public MeetingIndex() {
+        meetingState = MeetingState.getInstance();
+        meetingBloc = MeetingBloc.getInstance();
+
         meetings = new ArrayList<>();
-        availableMeetings = new ArrayList<>();
+        itemMap = new HashMap<>();
 
-        testDataGenerator();
+        setLayout(new BorderLayout());
+        setListener();
 
-        Box column = Box.createVerticalBox();
-        column.add(availableListBuilder());
+        setPreferredSize(new Dimension(900, 700));
 
-        JScrollPane scrollPane = new JScrollPane(column, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scrollPane = new JScrollPane(meetingListBuilder(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-        scrollPane.setPreferredSize(new Dimension(900, 700));
-        add(scrollPane);
+        scrollPane.setPreferredSize(new Dimension(890, 650));
+
+        add(new ListTitle("会议列表", new JButton("发起会议")), BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
+
+        meetingBloc.getMeeting();
+
     }
 }
