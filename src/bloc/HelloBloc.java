@@ -39,7 +39,6 @@ public class HelloBloc extends Bloc{
                 var id = result.getData();
                 globalBloc.onLoginSucceed(new Account(id, name, phone, password));
             }
-            System.out.println(result);
         });
     }
 

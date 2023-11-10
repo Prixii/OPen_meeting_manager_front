@@ -37,7 +37,6 @@ public class OrganizationBloc extends Bloc{
 
     public void getManagedOrganizations() {
         RequestController.organizationApi().manage(account(), (result, res, rsp) -> {
-            System.out.println("managed"+result);
             if (result.getCode() == 200) {
                 var records = result.getData();
                 Collections.reverse(records);
@@ -49,7 +48,6 @@ public class OrganizationBloc extends Bloc{
 
     public void getJoinedOrganizations() {
         RequestController.organizationApi().getList(account(), (result, res, rsp) -> {
-            System.out.println("joined"+result);
             if (result.getCode() == 200) {
                 var records = result.getData();
                 Collections.reverse(records);
@@ -62,7 +60,6 @@ public class OrganizationBloc extends Bloc{
     public void createOrganization(String name) {
         RequestController.organizationApi().create(new CreateBody(account(), name), (result, res, rsp) -> {
             if (result.getCode() == 200) {
-                System.out.println("创建成功" + result);
                 var organizationId = result.getData();
                 var newOrganization = new Organization(organizationId, account(), name);
                 state.addOrganizationManaged(newOrganization);
@@ -73,7 +70,6 @@ public class OrganizationBloc extends Bloc{
 
     public void dissolveOrganization(Integer organization) {
         RequestController.organizationApi().dissolve(new DissolveBody(account(), organization), (result, rep, rsp) -> {
-            System.out.println(result);
             if (result.getCode() == 200) {
                 state.removeOrganization(organization);
                 state.firePropertyChange("dissolve", null, organization);
@@ -84,7 +80,6 @@ public class OrganizationBloc extends Bloc{
     public void toOrganizationDetail(Integer organization) {
         Organization target = state.findOrganization(organization);
         RequestController.organizationApi().member(account(),organization, (result, res, rsp) -> {
-            System.out.println(result);
             if (result.getCode() == 200) {
                 state.firePropertyChange("toDetail", result.getData(), target);
             }
@@ -97,7 +92,6 @@ public class OrganizationBloc extends Bloc{
 
     public void kick(Integer organization, Integer account) {
         RequestController.organizationApi().kick(new KickBody(account, organization, account()),(result, res, rsp) -> {
-            System.out.println(result);
             if (result.getCode() == 200) {
                 state.firePropertyChange("remove", null, account);
             }
@@ -106,7 +100,6 @@ public class OrganizationBloc extends Bloc{
 
     public void leave(Integer organization) {
         RequestController.organizationApi().leave(new LeaveBody(account(), organization), (result, res, rsp) -> {
-            System.out.println(result);
             state.firePropertyChange("leave", null, organization);
         });
     }

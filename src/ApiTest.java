@@ -11,7 +11,6 @@ public class ApiTest {
         AccountApi myApi = Forest.client(AccountApi.class);
         var result =myApi.testList();
         assert result.getCode() == 200;
-        System.out.println(result);
     }
 }
 
