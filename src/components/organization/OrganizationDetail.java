@@ -65,7 +65,7 @@ public class OrganizationDetail extends JPanel {
     Component backButtonBuilder() {
         var panel = new Panel();
 
-        var backButton = CommonUtil.IconButton(IconAssets.ARROW_LEFT);
+        var backButton = CommonUtil.iconButton(IconAssets.ARROW_LEFT, false);
         backButton.addActionListener(e -> organizationBloc.toOverView());
         var flowLayout = new FlowLayout();
         flowLayout.setAlignment(FlowLayout.LEFT);
@@ -89,8 +89,8 @@ public class OrganizationDetail extends JPanel {
         var row = Box.createHorizontalBox();
         row.setBorder(new EmptyBorder(0,0,0,30));
 
-        var inviteButton = CommonUtil.IconButton(IconAssets.PEOPLE_PLUS);
-        inviteButton.setPreferredSize(new Dimension(60, 30));
+        var inviteButton = CommonUtil.iconButton(IconAssets.PEOPLE_PLUS, true);
+        inviteButton.setPreferredSize(new Dimension(40, 40));
 
         inviteButton.addActionListener(e -> onInvitePressed());
 
@@ -102,7 +102,9 @@ public class OrganizationDetail extends JPanel {
 
         row.add(addMemberLabel, BorderLayout.WEST);
         row.add(phoneBox, BorderLayout.CENTER);
+        row.add(Box.createHorizontalStrut(30));
         row.add(inviteButton, BorderLayout.EAST);
+        row.add(Box.createHorizontalStrut(20));
 
         invitationPanel.add(row);
         return invitationPanel;

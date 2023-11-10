@@ -1,5 +1,7 @@
 package components;
 
+import util.FontData;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -12,6 +14,7 @@ public class PlaceholderTextField extends JTextField implements FocusListener {
         this.placeholder = placeholder;
         addFocusListener(this);
         setPlaceholderText();
+        setFont(FontData.BODY);
     }
 
     private void setPlaceholderText() {

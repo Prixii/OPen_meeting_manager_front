@@ -4,6 +4,7 @@ package components.navigator;
 import bloc.NavigationBloc;
 import entity.enums.PageIndex;
 import lombok.var;
+import util.ColorData;
 import util.FontData;
 
 import javax.swing.*;
@@ -25,32 +26,32 @@ public class NavigatorItem extends JPanel {
         deactivateButton(meetingButton, meetingLabel);
         deactivateButton(groupButton, groupLabel);
         deactivateButton(invitationButton, invitationLabel);
-        button.setBackground(Color.WHITE);
-        label.setForeground(Color.BLACK);
+        button.setBackground(ColorData.BG);
+        label.setForeground(ColorData.PRIMARY);
     }
 
     void deactivateButton(JButton button, JLabel label) {
-        button.setBackground(Color.GRAY);
-        label.setForeground(Color.WHITE);
+        button.setBackground(ColorData.PRIMARY);
+        label.setForeground(ColorData.BG);
     }
 
     private Component buttonBuilder(JButton functionButton,JLabel label, String title) {
         label.setText(title);
-        label.setForeground(Color.WHITE);
+        label.setForeground(ColorData.BG);
         label.setFont(FontData.BODY);
         label.setBorder(new EmptyBorder(0,10,0,0));
         functionButton.add(label);
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBorder(new EmptyBorder(0,10,0,0));
         buttonPanel.setPreferredSize(new Dimension(300, 60));
-        Border roundBorder = new LineBorder(Color.gray, 0, true);
+        Border roundBorder = new LineBorder(ColorData.PRIMARY, 0, true);
         functionButton.setPreferredSize(new Dimension(290, 60));
         functionButton.setBorder(new EmptyBorder(0,0,0,0));
         functionButton.setBorder(roundBorder);
-        functionButton.setBackground(Color.GRAY);
+        functionButton.setBackground(ColorData.PRIMARY);
         functionButton.setFocusPainted(false);
         buttonPanel.add(functionButton);
-        buttonPanel.setBackground(Color.GRAY);
+        buttonPanel.setBackground(ColorData.PRIMARY);
         return  buttonPanel;
     }
 
@@ -89,15 +90,16 @@ public class NavigatorItem extends JPanel {
         navigationBloc = NavigationBloc.getInstance();
 
         setLayout(new BorderLayout());
-        setBackground(Color.GRAY);
+        setBackground(ColorData.PRIMARY);
 
         var column = Box.createVerticalBox();
-        column.setBackground(Color.GRAY);
+        column.setBackground(ColorData.PRIMARY);
         column.add(meetingButtonBuilder());
         column.add(groupButtonBuilder());
         column.add(inviteListButtonBuilder());
         column.add(Box.createVerticalGlue());
         add(column, BorderLayout.NORTH);
+        activateButton(meetingButton,meetingLabel);
     }
 
 

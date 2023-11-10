@@ -2,6 +2,7 @@ package pages;
 
 import components.navigator.NavigatorItem;
 import components.navigator.PageView;
+import util.ColorData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,7 +15,7 @@ public class Navigator extends JPanel {
         JPanel navigatorPanel = new JPanel();
 
         navigatorPanel.setPreferredSize(new Dimension(300, 700));
-        navigatorPanel.setBackground(Color.GRAY);
+        navigatorPanel.setBackground(ColorData.PRIMARY);
         navigatorPanel.add(new NavigatorItem());
 
         return navigatorPanel;

@@ -34,8 +34,8 @@ public class InvitationIndex extends JPanel {
             listView.add(new InvitationItem(invitation));
         }
 
-        if (invitations.size() <= 8) {
-            placeHolder = Box.createVerticalStrut(650 - invitations.size() * 80);
+        if (invitations.size() <= 7) {
+            placeHolder = Box.createVerticalStrut(610 - invitations.size() * 80);
             listView.add(placeHolder);
         } else {
             placeHolder = Box.createVerticalStrut(0);
@@ -63,8 +63,8 @@ public class InvitationIndex extends JPanel {
                 itemMap.put(invitation.getId(), item);
             }
 
-            if (invitations.size() <= 8) {
-                placeHolder = Box.createVerticalStrut(650 - invitations.size() * 80);
+            if (invitations.size() <= 7) {
+                placeHolder = Box.createVerticalStrut(610 - invitations.size() * 80);
                 listView.add(placeHolder);
             } else {
                 placeHolder = Box.createVerticalStrut(0);
@@ -111,9 +111,9 @@ public class InvitationIndex extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(invitationListBuilder(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-        scrollPane.setPreferredSize(new Dimension(890, 650));
+        scrollPane.setPreferredSize(new Dimension(850, 650));
 
-        add(new ListTitle("我的邀请", null), BorderLayout.NORTH);
+        add(new ListTitle("Invitations", null), BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
 }

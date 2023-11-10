@@ -6,6 +6,7 @@ import entity.Organization;
 import lombok.var;
 import state.OrganizationState;
 import util.CommonUtil;
+import util.FontData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -121,7 +122,7 @@ public class OrganizationOverView extends JPanel {
         Box column = Box.createVerticalBox();
         column.setAlignmentY(TOP_ALIGNMENT);
 
-        column.add(new ListTitle("加入的团队",null));
+        column.add(new ListTitle("Joined",null));
         column.add(itemListCreator(joinedPanel, organizationsJoined));
         return column;
     }
@@ -131,17 +132,21 @@ public class OrganizationOverView extends JPanel {
         Box column = Box.createVerticalBox();
         column.setAlignmentY(TOP_ALIGNMENT);
 
-        var createOrganization = new JButton("新建团队");
+        var createOrganization = new JButton();
+        var label = new JLabel("Create");
+        label.setFont(FontData.BODY);
+        label.setForeground(Color.white);
+        createOrganization.add(label);
         createOrganization.addActionListener(e -> onCreateOrganization());
 
-        column.add(new ListTitle("我的团队", createOrganization));
+        column.add(new ListTitle("Managing", createOrganization));
         column.add(itemListCreator(managedPanel, organizationsManaged));
 
         return column;
     }
 
     private void onCreateOrganization() {
-        String input = JOptionPane.showInputDialog(this, "团队名:");
+        String input = JOptionPane.showInputDialog(this, "Organization Name:");
         if (input != null) {
             organizationBloc.createOrganization(input);
         }
@@ -156,13 +161,13 @@ public class OrganizationOverView extends JPanel {
 
         setListener();
 //        TODO offline
-//        organizationBloc.getOrganizations();
+        organizationBloc.getOrganizations();
 
         setPreferredSize(new Dimension(900, 700));
 
         Box column = Box.createVerticalBox();
-        column.add(joinedBuilder());
         column.add(managedBuilder());
+        column.add(joinedBuilder());
 
         JScrollPane scrollPane = new JScrollPane(column, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));

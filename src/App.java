@@ -63,8 +63,8 @@ public class App {
 
     public static void main(String[] args) {
         App swingApp = new App();
-//        swingApp.showHello();
-        swingApp.showMain();
+        swingApp.showHello();
+//        swingApp.showMain();
     }
 
 }

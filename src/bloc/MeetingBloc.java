@@ -1,16 +1,18 @@
 package bloc;
 
 import api.RequestController;
+import api.Response.meeting.MeetingListResponse;
 import api.body.meeting.CancelBody;
 import api.body.meeting.CreateBody;
 import api.body.meeting.FinishBody;
+import entity.Meeting;
 import entity.Organization;
+import lombok.var;
 import state.GlobalState;
 import state.MeetingState;
 import state.OrganizationState;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class MeetingBloc extends Bloc {
     private static final MeetingBloc INSTANCE = new MeetingBloc();
@@ -35,7 +37,9 @@ public class MeetingBloc extends Bloc {
         RequestController.meetingApi().getList(account(), (result, res, rsp) -> {
             System.out.println(result);
             if (result.getCode() == 200) {
-                state.firePropertyChange("refresh", null, result.getData());
+                List<MeetingListResponse> records = result.getData();
+                Collections.reverse(records);
+                state.firePropertyChange("refresh", null, records);
             }
         });
     }
@@ -79,9 +83,14 @@ public class MeetingBloc extends Bloc {
         }
     }
 
-    public void onCreateMeeting(List<Integer> participants, String  title, String start, String end) {
-        RequestController.meetingApi().create(new CreateBody(account(), title, participants, start, end), (result, res, rsp) -> {
-
+    public void onCreateMeeting(Set<Integer> participants, String  title, String start, String end) {
+        List<Integer> participantList = new ArrayList<>(participants);
+        participantList.add(account());
+        RequestController.meetingApi().create(new CreateBody(account(), title, participantList, start, end), (result, res, rsp) -> {
+            System.out.println(result);
+            if (result.getCode() == 200) {
+                state.firePropertyChange("create", null, new Meeting(result.getData(), title, account(), 0, 0, start, end));
+            }
         });
     }
 }

@@ -5,6 +5,7 @@ import bloc.MeetingBloc;
 import entity.Meeting;
 import lombok.var;
 import state.GlobalState;
+import util.ColorData;
 import util.CommonUtil;
 import util.FontData;
 
@@ -23,14 +24,14 @@ public class MeetingItem extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(new EmptyBorder(10,10,10,10));
         panel.setPreferredSize(new Dimension(840, 70));
-        panel.setBackground(Color.GRAY);
+        panel.setBackground(Color.WHITE);
         panel.add(contentBuilder());
         add(panel);
     }
 
     Component contentBuilder() {
         var row = Box.createHorizontalBox();
-        row.setBorder(new EmptyBorder(10,0,10,0));
+        row.setBorder(new EmptyBorder(5,0,5,0));
         row.add(meetingTitleBuilder());
         row.add(Box.createHorizontalGlue());
         if (meeting.belongTo(globalState.getUser().getId())){
@@ -45,13 +46,14 @@ public class MeetingItem extends JPanel {
     Component meetingTitleBuilder() {
         var label = new JLabel(meeting.getTitle());
         label.setFont(FontData.BODY);
-        label.setForeground(Color.white);
+        label.setForeground(Color.BLACK);
         return label;
     }
 
     Component finishButtonBuilder() {
-        var acceptButton = CommonUtil.IconButton(IconAssets.CHECK_ONE);
+        var acceptButton = CommonUtil.iconButton(IconAssets.CHECK_ONE, true);
         acceptButton.addActionListener(e -> onFinishPressed());
+        acceptButton.setBackground(ColorData.ACCEPT);
         return acceptButton;
     }
 
@@ -59,7 +61,8 @@ public class MeetingItem extends JPanel {
         meetingBloc.onFinish(meeting.getId());
     }
     Component cancelButtonBuilder() {
-        var refuseButton = CommonUtil.IconButton(IconAssets.CLOSE_ONE);
+        var refuseButton = CommonUtil.iconButton(IconAssets.CLOSE_ONE, true);
+        refuseButton.setBackground(ColorData.WARNING);
         refuseButton.addActionListener(e -> onCancelPressed());
         return refuseButton;
     }

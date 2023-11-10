@@ -4,6 +4,7 @@ import assets.IconAssets;
 import bloc.MeetingBloc;
 import entity.Member;
 import lombok.var;
+import util.ColorData;
 import util.CommonUtil;
 import util.FontData;
 
@@ -20,8 +21,8 @@ public class ParticipantItem extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(new EmptyBorder(0,10,0,10));
-        panel.setPreferredSize(new Dimension(360, 50));
-        panel.setBackground(Color.GRAY);
+        panel.setPreferredSize(new Dimension(340, 50));
+        panel.setBackground(Color.WHITE);
         panel.add(contentBuilder());
         add(panel);
     }
@@ -39,12 +40,13 @@ public class ParticipantItem extends JPanel {
     Component memberNameBuilder() {
         var label = new JLabel(member.getName());
         label.setFont(FontData.BODY);
-        label.setForeground(Color.white);
+        label.setForeground(Color.BLACK);
         return label;
     }
 
     Component removeButtonBuilder() {
-        var refuseButton = CommonUtil.IconButton(IconAssets.CLOSE_ONE);
+        var refuseButton = CommonUtil.iconButton(IconAssets.PEOPLE_MINUS, true);
+        refuseButton.setBackground(ColorData.WARNING);
         refuseButton.addActionListener(e -> onRemovePressed());
         return refuseButton;
     }
@@ -59,7 +61,7 @@ public class ParticipantItem extends JPanel {
         this.member = member;
         layout = new GridBagLayout();
         setLayout(layout);
-        setPreferredSize(new Dimension(360, 60));
+        setPreferredSize(new Dimension(340, 60));
         panelBuilder();
     }
 }

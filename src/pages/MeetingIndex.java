@@ -10,6 +10,7 @@ import lombok.var;
 import state.GlobalState;
 import state.MeetingState;
 import util.CommonUtil;
+import util.FontData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -30,6 +31,7 @@ public class MeetingIndex extends JPanel {
     void setListener() {
         setOnRefreshListener();
         setOnFinishListener();
+        setOnCreateListener();
     }
 
     void setOnRefreshListener() {
@@ -48,8 +50,24 @@ public class MeetingIndex extends JPanel {
             var targetId = (Integer) evt.getNewValue();
             var target = itemMap.get(targetId);
             listView.remove(target);
-            if (itemMap.size() <= 8) {
-                listView.add(Box.createVerticalBox());
+            if (itemMap.size() <= 7) {
+                listView.add(Box.createVerticalStrut(80));
+            }
+            CommonUtil.repaint(listView);
+        });
+
+    }
+    void setOnCreateListener() {
+        meetingState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "create")) { return; }
+            var newMeeting = (Meeting) evt.getNewValue();
+            listView.remove(placeHolder);
+            var item = new MeetingItem(newMeeting);
+            listView.add(item, 0);
+            itemMap.put(newMeeting.getId(), item);
+            if (meetings.size() <= 7) {
+                placeHolder = Box.createVerticalStrut(610 - meetings.size() * 80);
+                listView.add(placeHolder);
             }
             CommonUtil.repaint(listView);
         });
@@ -57,7 +75,11 @@ public class MeetingIndex extends JPanel {
     }
 
     JButton createMeetingButtonBuilder() {
-        var button = new JButton("发起会议");
+        var button = new JButton();
+        var label = new JLabel("Create");
+        label.setFont(FontData.BODY);
+        label.setForeground(Color.white);
+        button.add(label);
         button.addActionListener(e -> showMeetingCreator());
         return button;
     }
@@ -82,8 +104,8 @@ public class MeetingIndex extends JPanel {
             itemMap.put(meeting.getId(),item);
         }
 
-        if (meetings.size() <= 8) {
-            placeHolder = Box.createVerticalStrut(650 - meetings.size() * 80);
+        if (meetings.size() <= 7) {
+            placeHolder = Box.createVerticalStrut(610 - meetings.size() * 80);
             listView.add(placeHolder);
         } else {
             placeHolder = Box.createVerticalStrut(0);
@@ -108,12 +130,11 @@ public class MeetingIndex extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(meetingListBuilder(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-        scrollPane.setPreferredSize(new Dimension(890, 650));
+        scrollPane.setPreferredSize(new Dimension(850, 650));
 
-        add(new ListTitle("会议列表", createMeetingButtonBuilder()), BorderLayout.NORTH);
+        add(new ListTitle("Meetings", createMeetingButtonBuilder()), BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
-//        TODO offline
-//        meetingBloc.getMeeting();
+        meetingBloc.getMeeting();
     }
 }

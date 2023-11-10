@@ -4,6 +4,7 @@ import assets.IconAssets;
 import bloc.InvitationBloc;
 import entity.Invitation;
 import lombok.var;
+import util.ColorData;
 import util.CommonUtil;
 import util.FontData;
 
@@ -20,15 +21,15 @@ public class InvitationItem extends JPanel{
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(new EmptyBorder(10,10,10,10));
         panel.setPreferredSize(new Dimension(840, 70));
-        panel.setBackground(Color.GRAY);
+        panel.setBackground(Color.WHITE);
         panel.add(contentBuilder());
         add(panel);
     }
 
     Component contentBuilder() {
         var row = Box.createHorizontalBox();
-        row.setBorder(new EmptyBorder(10,0,10,0));
-        row.add(memberNameBuilder());
+        row.setBorder(new EmptyBorder(5,0,5,0));
+        row.add(invitationNameBuilder());
         row.add(Box.createHorizontalGlue());
         row.add(acceptButtonBuilder());
         row.add(Box.createHorizontalStrut(15));
@@ -37,16 +38,18 @@ public class InvitationItem extends JPanel{
         return row;
     }
 
-    Component memberNameBuilder() {
+    Component invitationNameBuilder() {
         var label = new JLabel(invitation.getOrganizationName());
         label.setFont(FontData.BODY);
-        label.setForeground(Color.white);
+        label.setForeground(Color.BLACK);
         return label;
     }
 
     Component acceptButtonBuilder() {
-        var acceptButton = CommonUtil.IconButton(IconAssets.CHECK_ONE);
+        var acceptButton = CommonUtil.iconButton(IconAssets.CHECK_ONE, true);
         acceptButton.addActionListener(e -> onAcceptPressed());
+        acceptButton.setBackground(ColorData.ACCEPT);
+
         return acceptButton;
     }
 
@@ -54,8 +57,9 @@ public class InvitationItem extends JPanel{
         invitationBloc.onAccept(invitation.getId());
     }
     Component refuseButtonBuilder() {
-        var refuseButton = CommonUtil.IconButton(IconAssets.CLOSE_ONE);
+        var refuseButton = CommonUtil.iconButton(IconAssets.CLOSE_ONE, true);
         refuseButton.addActionListener(e -> onRefusePressed());
+        refuseButton.setBackground(ColorData.WARNING);
         return refuseButton;
     }
 

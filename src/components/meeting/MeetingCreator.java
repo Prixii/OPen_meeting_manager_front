@@ -33,24 +33,15 @@ public class MeetingCreator extends JDialog{
 
     List<Organization> organizations;
     List<Member> members;
-    List<Integer> participants;
+    Set<Integer> participants;
     Map<Integer, Component> itemMap;
 
-    void testDataGenerator() {
-        organizations.add(new Organization(123,123,"testOrganization"));
-        organizations.add(new Organization(1234,123,"testOrganization"));
-        organizations.add(new Organization(1235,123,"testOrganization"));
-
-        members.add(new Member(1234,123,"testMember"));
-        members.add(new Member(1235,123,"testMember"));
-        members.add(new Member(123,123,"testMember"));
-
-    }
 
     void setListener() {
         setAddParticipantListener();
         setRemoveParticipantListener();
         setChooseOrganizationListener();
+        setOnCreateListener();
     }
 
     void setAddParticipantListener() {
@@ -59,7 +50,8 @@ public class MeetingCreator extends JDialog{
             for (Member member:
                  members) {
                 if (Objects.equals(member.getAccount(), evt.getNewValue())) {
-                    participants.add(0, member.getAccount());
+                    if (participants.contains(member.getAccount())) {return;}
+                    participants.add(member.getAccount());
                     participantListView.remove(participantPlaceHolder);
                     var item = new ParticipantItem(member);
                     itemMap.put(member.getAccount(), item);
@@ -99,30 +91,53 @@ public class MeetingCreator extends JDialog{
         });
     }
 
+    void setOnCreateListener() {
+        meetingState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "create")) { return; }
+            reset();
+            this.setVisible(false);
+        });
+
+    }
     Component baseEditor() {
         var panel = new JPanel();
         panel.setPreferredSize(new Dimension(800, 80));
-        panel.setLayout(new GridLayout(2,1));
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+
+        var column = Box.createVerticalBox();
+
         titleBox = new PlaceholderTextField("Title:");
         startTimeBox = new PlaceholderTextField("StartTime");
         endTimeBox = new PlaceholderTextField("EndTime");
 
         var titlePanel = formBuilder(titleBox, "Title");
         titlePanel.setPreferredSize(new Dimension(800, 40));
-        panel.add(titlePanel);
 
         var startTimePanel = formBuilder(startTimeBox, "Start Time");
-        titlePanel.setPreferredSize(new Dimension(400, 40));
+        titlePanel.setPreferredSize(new Dimension(390, 40));
 
         var endTimePanel = formBuilder(endTimeBox, "End Time");
-        titlePanel.setPreferredSize(new Dimension(400, 40));
+        titlePanel.setPreferredSize(new Dimension(390, 40));
 
         var timePanel = new JPanel();
+        timePanel.setLayout(new FlowLayout());
         timePanel.setLayout(new GridLayout(1, 2));
-        timePanel.add(startTimePanel);
-        timePanel.add(endTimePanel);
 
-        panel.add(timePanel);
+        var timeContainer = new JPanel();
+        timeContainer.setPreferredSize(new Dimension(800, 40));
+        timeContainer.setLayout(new BoxLayout(timeContainer, BoxLayout.X_AXIS));
+        var timeEditor = Box.createHorizontalBox();
+        timeContainer.add(timeEditor);
+        timeEditor.add(startTimePanel);
+        timeEditor.add(Box.createHorizontalStrut(20));
+        timeEditor.add(endTimePanel);
+
+        timePanel.add(timeContainer);
+
+        column.add(titlePanel);
+        column.add(Box.createVerticalStrut(20));
+        column.add(timePanel);
+        panel.add(column);
         return panel;
     }
 
@@ -131,6 +146,7 @@ public class MeetingCreator extends JDialog{
         var titleLabel = new JLabel(title);
         titleLabel.setFont(FontData.BODY);
         titlePanel.add(titleLabel);
+        titlePanel.add(Box.createHorizontalStrut(10));
         titlePanel.add(textField);
         return titlePanel;
     }
@@ -181,12 +197,11 @@ public class MeetingCreator extends JDialog{
         label.setBorder(new EmptyBorder(0,0,0,10));
         label.setFont(FontData.BODY);
         var comboBox = new JComboBox<>(new DefaultComboBoxModel<>());
+        comboBox.setFont(FontData.BODY);
         for (Organization organization:
                 organizationState.getOrganizationsManaged()) {
             comboBox.addItem(organization.getName());
         }
-        comboBox.addItem("sss");
-        comboBox.addItem("123456");
         comboBox.addActionListener(e -> meetingBloc.chooseOrganization((String) comboBox.getSelectedItem()));
 
         comboBoxPanel.add(label, BorderLayout.WEST);
@@ -234,6 +249,11 @@ public class MeetingCreator extends JDialog{
         var confirmButton = new JButton("Create");
         var cancelButton = new JButton("Cancel");
 
+        cancelButton.addActionListener(e -> {
+            reset();
+            this.setVisible(false);
+        });
+
 //        TODO Confirm
         confirmButton.addActionListener(e -> meetingBloc.onCreateMeeting(participants, titleBox.getText(), startTimeBox.getText(), endTimeBox.getText()));
 
@@ -247,32 +267,47 @@ public class MeetingCreator extends JDialog{
         return panel;
     }
 
+    void reset() {
+        titleBox.setText("");
+        participants.clear();
+        members.clear();
+        startTimeBox.setText("");
+        endTimeBox.setText("");
+    }
+
     public MeetingCreator(JFrame frame, String title) {
         super(frame, title);
 
-        organizations = new ArrayList<>();
         members = new ArrayList<>();
-        participants = new ArrayList<>();
+        participants = new HashSet<>();
         itemMap = new HashMap<>();
-
-        testDataGenerator();
 
         meetingBloc = MeetingBloc.getInstance();
         meetingState =MeetingState.getInstance();
         organizationState = OrganizationState.getInstance();
 
+        organizations = organizationState.getOrganizationsManaged();
+
         setSize(new Dimension(800,520));
+
+        var panel = new JPanel();
+        panel.setPreferredSize(new Dimension(800, 520));
+
         setLocationRelativeTo(null);
         setResizable(false);
         setModal(true);
         var layout = new BorderLayout();
-        setLayout(layout);
+        panel.setLayout(layout);
+        panel.setBorder(new EmptyBorder(10,10,10,10));
 
         setListener();
-        add(baseEditor(), BorderLayout.NORTH);
-        add(panelBuilder(), BorderLayout.CENTER);
-        add(buttonGroupBuilder(), BorderLayout.SOUTH);
-        //        TODO offline
-//        meetingBloc.chooseOrganization(organizations.get(0).getName());
+        panel.add(baseEditor(), BorderLayout.NORTH);
+        panel.add(panelBuilder(), BorderLayout.CENTER);
+        panel.add(buttonGroupBuilder(), BorderLayout.SOUTH);
+
+        add(panel);
+
+        meetingBloc.chooseOrganization(organizations.get(0).getName());
     }
+
 }

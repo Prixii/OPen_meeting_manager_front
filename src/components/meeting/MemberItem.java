@@ -20,8 +20,8 @@ public class MemberItem extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(new EmptyBorder(0,10,0,10));
-        panel.setPreferredSize(new Dimension(360, 50));
-        panel.setBackground(Color.GRAY);
+        panel.setPreferredSize(new Dimension(350, 50));
+        panel.setBackground(Color.WHITE);
         panel.add(contentBuilder());
         add(panel);
     }
@@ -39,12 +39,13 @@ public class MemberItem extends JPanel {
     Component memberNameBuilder() {
         var label = new JLabel(member.getName());
         label.setFont(FontData.BODY);
-        label.setForeground(Color.white);
+        label.setForeground(Color.BLACK);
         return label;
     }
 
     Component chooseButtonBuilder() {
-        var refuseButton = CommonUtil.IconButton(IconAssets.CHECK_ONE);
+        var refuseButton = CommonUtil.iconButton(IconAssets.PEOPLE_PLUS, true);
+        refuseButton.setPreferredSize(new Dimension(40,40));
         refuseButton.addActionListener(e -> onChoosePressed());
         return refuseButton;
     }
@@ -59,7 +60,7 @@ public class MemberItem extends JPanel {
         this.member = member;
         layout = new GridBagLayout();
         setLayout(layout);
-        setPreferredSize(new Dimension(360, 60));
+        setPreferredSize(new Dimension(350, 60));
         panelBuilder();
     }
 }

@@ -5,6 +5,7 @@ import bloc.OrganizationBloc;
 import entity.Organization;
 import lombok.var;
 import state.GlobalState;
+import util.ColorData;
 import util.CommonUtil;
 import util.FontData;
 
@@ -24,14 +25,14 @@ public class OrganizationItem extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(new EmptyBorder(10,10,10,10));
         panel.setPreferredSize(new Dimension(410, 70));
-        panel.setBackground(Color.GRAY);
+        panel.setBackground(Color.WHITE);
         panel.add(contentBuilder());
         add(panel);
     }
 
     Component contentBuilder() {
         var row = Box.createHorizontalBox();
-        row.setBorder(new EmptyBorder(10,0,10,0));
+        row.setBorder(new EmptyBorder(5,0,5,0));
         row.add(nameBuilder());
         row.add(Box.createHorizontalGlue());
         row.add(buttonGroupBuilder());
@@ -47,18 +48,21 @@ public class OrganizationItem extends JPanel {
     Component buttonGroupBuilder() {
         var buttonGroup = Box.createHorizontalBox();
         if (Objects.equals(organization.getCreator(), globalState.getUser().getId())){
-            var deleteButton = CommonUtil.IconButton(IconAssets.DELETE);
+            var deleteButton = CommonUtil.iconButton(IconAssets.DELETE, true);
+            deleteButton.setBackground(ColorData.WARNING);
             deleteButton.addActionListener(e -> onDissolvePressed());
 
-            var detailButton = CommonUtil.IconButton(IconAssets.EVERY_USER);
+            var detailButton = CommonUtil.iconButton(IconAssets.EVERY_USER, true);
             detailButton.addActionListener(e -> onDetailPressed());
+            detailButton.setBackground(ColorData.PRIMARY);
 
             buttonGroup.add(detailButton);
             buttonGroup.add(Box.createHorizontalStrut(10));
             buttonGroup.add(deleteButton);
         } else {
-            var logoutButton = CommonUtil.IconButton(IconAssets.LOGOUT);
+            var logoutButton = CommonUtil.iconButton(IconAssets.LOGOUT, true);
             logoutButton.addActionListener(e -> onExitPressed());
+            logoutButton.setBackground(ColorData.WARNING);
             buttonGroup.add(logoutButton);
         }
 

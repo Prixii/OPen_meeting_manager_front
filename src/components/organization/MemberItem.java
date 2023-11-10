@@ -4,6 +4,7 @@ import assets.IconAssets;
 import bloc.OrganizationBloc;
 import entity.Member;
 import lombok.var;
+import util.ColorData;
 import util.CommonUtil;
 import util.FontData;
 
@@ -24,14 +25,14 @@ public class MemberItem extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(new EmptyBorder(10,10,10,10));
         panel.setPreferredSize(new Dimension(820, 70));
-        panel.setBackground(Color.GRAY);
+        panel.setBackground(Color.WHITE);
         panel.add(contentBuilder());
         add(panel);
     }
 
     Component contentBuilder() {
         var row = Box.createHorizontalBox();
-        row.setBorder(new EmptyBorder(10,0,10,0));
+        row.setBorder(new EmptyBorder(5,0,5,0));
         row.add(memberNameBuilder());
         row.add(Box.createHorizontalGlue());
         row.add(kickButtonBuilder());
@@ -42,12 +43,13 @@ public class MemberItem extends JPanel {
     Component memberNameBuilder() {
         var label = new JLabel(member.getName());
         label.setFont(FontData.BODY);
-        label.setForeground(Color.white);
+        label.setForeground(Color.BLACK);
         return label;
     }
 
     Component kickButtonBuilder() {
-        var kickButton = CommonUtil.IconButton(IconAssets.DELETE);
+        var kickButton = CommonUtil.iconButton(IconAssets.DELETE, true);
+        kickButton.setBackground(ColorData.WARNING);
         kickButton.addActionListener(e -> onKickPressed());
         return kickButton;
     }
