@@ -50,11 +50,10 @@ public class MemberList extends JPanel {
         });
     }
 
-    Component memberListBuilder() {
+    void memberListBuilder() {
         listView = Box.createVerticalBox();
         listView.setAlignmentY(SwingConstants.TOP);
         buildItem();
-        return listView;
     }
 
     void buildItem() {
@@ -86,7 +85,8 @@ public class MemberList extends JPanel {
         setListener();
         itemMap = new HashMap<>();
         setPreferredSize(new Dimension(870, 420));
-        scrollPane = new JScrollPane(memberListBuilder(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        memberListBuilder();
+        scrollPane = new JScrollPane(listView, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));
         scrollPane.setPreferredSize(new Dimension(860, 410));
         add(scrollPane);

@@ -37,4 +37,12 @@ public class MeetingBloc extends Bloc {
     public void onCancel(Integer meeting) {
 
     }
+
+    public void onAddParticipant(Integer account) {
+
+    }
+
+    public void onRemoveParticipant(Integer account) {
+
+    }
 }
