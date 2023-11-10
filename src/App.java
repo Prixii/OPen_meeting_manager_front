@@ -39,6 +39,9 @@ public class App {
 
     public void showMain(){
         var mainFrame = new JFrame();
+
+        globalState.setMainFrame(mainFrame);
+
         mainFrame.setTitle("MeetingManager");
         mainFrame.setSize(1200,900);
         mainFrame.setLocation(400,200);
@@ -60,8 +63,8 @@ public class App {
 
     public static void main(String[] args) {
         App swingApp = new App();
-        swingApp.showHello();
-//        swingApp.showMain();
+//        swingApp.showHello();
+        swingApp.showMain();
     }
 
 }

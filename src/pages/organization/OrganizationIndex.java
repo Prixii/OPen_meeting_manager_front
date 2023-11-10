@@ -1,5 +1,7 @@
-package components.organization;
+package pages.organization;
 
+import components.organization.OrganizationDetail;
+import components.organization.OrganizationOverView;
 import state.OrganizationState;
 
 import javax.swing.*;

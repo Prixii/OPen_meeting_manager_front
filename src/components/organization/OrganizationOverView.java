@@ -155,7 +155,8 @@ public class OrganizationOverView extends JPanel {
         itemMap = new HashMap<>();
 
         setListener();
-        organizationBloc.getOrganizations();
+//        TODO offline
+//        organizationBloc.getOrganizations();
 
         setPreferredSize(new Dimension(900, 700));
 

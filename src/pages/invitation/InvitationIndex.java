@@ -1,8 +1,9 @@
-package components.invitation;
+package pages.invitation;
 
 import bloc.InvitationBloc;
 import bloc.OrganizationBloc;
 import components.ListTitle;
+import components.invitation.InvitationItem;
 import components.organization.MemberItem;
 import entity.Invitation;
 import entity.Member;

@@ -113,7 +113,7 @@ public class OrganizationDetail extends JPanel {
         invitationBloc.onInvite(organization.getId(), phoneBox.getText());
     }
 
-    OrganizationDetail() {
+    public OrganizationDetail() {
         organizationState = OrganizationState.getInstance();
         organizationBloc = OrganizationBloc.getInstance();
         invitationBloc = InvitationBloc.getInstance();
