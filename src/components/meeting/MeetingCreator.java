@@ -1,6 +1,7 @@
 package components.meeting;
 
 import bloc.MeetingBloc;
+import components.PlaceholderTextField;
 import entity.Member;
 import entity.Organization;
 import lombok.var;
@@ -26,6 +27,9 @@ public class MeetingCreator extends JDialog{
     Component memberPlaceHolder;
     Component participantPlaceHolder;
     JPanel comboBoxPanel;
+    PlaceholderTextField titleBox;
+    PlaceholderTextField startTimeBox;
+    PlaceholderTextField endTimeBox;
 
     List<Organization> organizations;
     List<Member> members;
@@ -34,11 +38,11 @@ public class MeetingCreator extends JDialog{
 
     void testDataGenerator() {
         organizations.add(new Organization(123,123,"testOrganization"));
-        organizations.add(new Organization(123,123,"testOrganization"));
-        organizations.add(new Organization(123,123,"testOrganization"));
+        organizations.add(new Organization(1234,123,"testOrganization"));
+        organizations.add(new Organization(1235,123,"testOrganization"));
 
-        members.add(new Member(123,123,"testMember"));
-        members.add(new Member(123,123,"testMember"));
+        members.add(new Member(1234,123,"testMember"));
+        members.add(new Member(1235,123,"testMember"));
         members.add(new Member(123,123,"testMember"));
 
     }
@@ -93,6 +97,42 @@ public class MeetingCreator extends JDialog{
             members = (List<Member>) evt.getNewValue();
             memberListBuilder();
         });
+    }
+
+    Component baseEditor() {
+        var panel = new JPanel();
+        panel.setPreferredSize(new Dimension(800, 80));
+        panel.setLayout(new GridLayout(2,1));
+        titleBox = new PlaceholderTextField("Title:");
+        startTimeBox = new PlaceholderTextField("StartTime");
+        endTimeBox = new PlaceholderTextField("EndTime");
+
+        var titlePanel = formBuilder(titleBox, "Title");
+        titlePanel.setPreferredSize(new Dimension(800, 40));
+        panel.add(titlePanel);
+
+        var startTimePanel = formBuilder(startTimeBox, "Start Time");
+        titlePanel.setPreferredSize(new Dimension(400, 40));
+
+        var endTimePanel = formBuilder(endTimeBox, "End Time");
+        titlePanel.setPreferredSize(new Dimension(400, 40));
+
+        var timePanel = new JPanel();
+        timePanel.setLayout(new GridLayout(1, 2));
+        timePanel.add(startTimePanel);
+        timePanel.add(endTimePanel);
+
+        panel.add(timePanel);
+        return panel;
+    }
+
+    Component formBuilder(PlaceholderTextField textField, String title) {
+        var titlePanel = Box.createHorizontalBox();
+        var titleLabel = new JLabel(title);
+        titleLabel.setFont(FontData.BODY);
+        titlePanel.add(titleLabel);
+        titlePanel.add(textField);
+        return titlePanel;
     }
 
     Component panelBuilder() {
@@ -184,6 +224,29 @@ public class MeetingCreator extends JDialog{
         return scrollPane;
     }
 
+    Component buttonGroupBuilder() {
+        var panel = new JPanel();
+        panel.setPreferredSize(new Dimension(800, 40));
+        panel.setBorder(new EmptyBorder(10,0,10,0));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        var row = Box.createHorizontalBox();
+        row.setBackground(Color.CYAN);
+        var confirmButton = new JButton("Create");
+        var cancelButton = new JButton("Cancel");
+
+//        TODO Confirm
+        confirmButton.addActionListener(e -> meetingBloc.onCreateMeeting(participants, titleBox.getText(), startTimeBox.getText(), endTimeBox.getText()));
+
+        row.add(Box.createHorizontalGlue());
+        row.add(cancelButton);
+        row.add(Box.createHorizontalGlue());
+        row.add(confirmButton);
+        row.add(Box.createHorizontalGlue());
+
+        panel.add(row);
+        return panel;
+    }
+
     public MeetingCreator(JFrame frame, String title) {
         super(frame, title);
 
@@ -198,7 +261,7 @@ public class MeetingCreator extends JDialog{
         meetingState =MeetingState.getInstance();
         organizationState = OrganizationState.getInstance();
 
-        setSize(new Dimension(800,400));
+        setSize(new Dimension(800,520));
         setLocation(650, 380);
         setResizable(false);
         setModal(true);
@@ -206,7 +269,9 @@ public class MeetingCreator extends JDialog{
         setLayout(layout);
 
         setListener();
+        add(baseEditor(), BorderLayout.NORTH);
         add(panelBuilder(), BorderLayout.CENTER);
+        add(buttonGroupBuilder(), BorderLayout.SOUTH);
         //        TODO offline
 //        meetingBloc.chooseOrganization(organizations.get(0).getName());
     }

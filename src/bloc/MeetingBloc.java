@@ -1,12 +1,17 @@
 package bloc;
 
 import api.RequestController;
+import api.body.meeting.CancelBody;
+import api.body.meeting.CreateBody;
+import api.body.meeting.FinishBody;
+import com.sun.org.apache.bcel.internal.generic.IREM;
 import entity.Organization;
 import state.GlobalState;
 import state.MeetingState;
 import state.OrganizationState;
 
 import java.util.Currency;
+import java.util.List;
 import java.util.Objects;
 
 public class MeetingBloc extends Bloc {
@@ -38,11 +43,17 @@ public class MeetingBloc extends Bloc {
     }
 
     public void onFinish(Integer meeting) {
-
+        RequestController.meetingApi().finish(new FinishBody(account(), meeting), (result, res, rsp) -> {
+            if (result.getCode() == 200) {
+                state.firePropertyChange("finish", null, meeting);
+            }
+        });
     }
 
     public void onCancel(Integer meeting) {
-
+        RequestController.meetingApi().cancel(new CancelBody(account(), meeting), (result, res, rsp) -> {
+            state.firePropertyChange("finish", null, meeting);
+        });
     }
 
     public void onAddParticipant(Integer account) {
@@ -50,6 +61,7 @@ public class MeetingBloc extends Bloc {
     }
 
     public void onRemoveParticipant(Integer account) {
+
         state.firePropertyChange("remove", null, account);
     }
 
@@ -66,7 +78,12 @@ public class MeetingBloc extends Bloc {
                 });
                 break;
             }
-
         }
+    }
+
+    public void onCreateMeeting(List<Integer> participants, String  title, String start, String end) {
+        RequestController.meetingApi().create(new CreateBody(account(), title, participants, start, end), (result, res, rsp) -> {
+
+        });
     }
 }

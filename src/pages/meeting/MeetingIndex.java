@@ -29,6 +29,7 @@ public class MeetingIndex extends JPanel {
 
     void setListener() {
         setOnRefreshListener();
+        setOnFinishListener();
     }
 
     void setOnRefreshListener() {
@@ -39,6 +40,20 @@ public class MeetingIndex extends JPanel {
             meetings = (List<MeetingListResponse>) evt.getNewValue();
             buildItem();
         });
+    }
+
+    void setOnFinishListener() {
+        meetingState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "finish")) { return; }
+            var targetId = (Integer) evt.getNewValue();
+            var target = itemMap.get(targetId);
+            listView.remove(target);
+            if (itemMap.size() <= 8) {
+                listView.add(Box.createVerticalBox());
+            }
+            CommonUtil.repaint(listView);
+        });
+
     }
 
     JButton createMeetingButtonBuilder() {

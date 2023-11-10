@@ -14,5 +14,4 @@ public class MeetingState extends State{
 
     public static MeetingState getInstance() { return INSTANCE; }
 
-
 }
