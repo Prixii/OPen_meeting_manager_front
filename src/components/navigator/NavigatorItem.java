@@ -17,17 +17,25 @@ public class NavigatorItem extends JPanel {
     JButton meetingButton;
     JButton groupButton;
     JButton invitationButton;
+    JLabel meetingLabel;
+    JLabel groupLabel;
+    JLabel invitationLabel;
 
-    void activateButton(JButton button) {
+    void activateButton(JButton button, JLabel label) {
+        deactivateButton(meetingButton, meetingLabel);
+        deactivateButton(groupButton, groupLabel);
+        deactivateButton(invitationButton, invitationLabel);
         button.setBackground(Color.WHITE);
+        label.setForeground(Color.BLACK);
     }
 
-    void deactivateButton(JButton button) {
+    void deactivateButton(JButton button, JLabel label) {
         button.setBackground(Color.GRAY);
+        label.setForeground(Color.WHITE);
     }
 
-    private Component buttonBuilder(JButton functionButton, String title) {
-        var label = new JLabel(title);
+    private Component buttonBuilder(JButton functionButton,JLabel label, String title) {
+        label.setText(title);
         label.setForeground(Color.WHITE);
         label.setFont(FontData.BODY);
         label.setBorder(new EmptyBorder(0,10,0,0));
@@ -48,21 +56,33 @@ public class NavigatorItem extends JPanel {
 
     private Component meetingButtonBuilder() {
         meetingButton =  new JButton();
-        meetingButton.addActionListener(action -> navigationBloc.setIndex(PageIndex.MEETING_LIST));
-        return buttonBuilder(meetingButton, "Meetings");
+        meetingButton.addActionListener(action -> {
+            activateButton(meetingButton, meetingLabel);
+            navigationBloc.setIndex(PageIndex.MEETING_LIST);
+        });
+        meetingLabel = new JLabel();
+        return buttonBuilder(meetingButton, meetingLabel, "Meetings");
     }
 
     private Component groupButtonBuilder() {
         groupButton =  new JButton();
 
-        groupButton.addActionListener(action -> navigationBloc.setIndex(PageIndex.ORGANIZATION_LIST));
-        return buttonBuilder(groupButton,"Organizations");
+        groupButton.addActionListener(action -> {
+            activateButton(groupButton, groupLabel);
+            navigationBloc.setIndex(PageIndex.ORGANIZATION_LIST);
+        });
+        groupLabel = new JLabel();
+        return buttonBuilder(groupButton,groupLabel,"Organizations");
     }
 
     private Component inviteListButtonBuilder() {
         invitationButton =  new JButton();
-        invitationButton.addActionListener(action -> navigationBloc.setIndex(PageIndex.INVITATION_LIST));
-        return buttonBuilder(invitationButton, "Invitations");
+        invitationButton.addActionListener(action -> {
+            activateButton(invitationButton, invitationLabel);
+            navigationBloc.setIndex(PageIndex.INVITATION_LIST);
+        });
+        invitationLabel = new JLabel();
+        return buttonBuilder(invitationButton,invitationLabel, "Invitations");
     }
 
     public NavigatorItem() {
