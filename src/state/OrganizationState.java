@@ -15,7 +15,6 @@ public class OrganizationState extends State{
     List<Organization> organizationsJoined;
     List<Organization> organizationsManaged;
 
-
     private static final OrganizationState INSTANCE = new OrganizationState();
 
     private OrganizationState() {

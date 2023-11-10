@@ -3,7 +3,6 @@ package components.meeting;
 import bloc.MeetingBloc;
 import entity.Member;
 import entity.Organization;
-import entity.Participant;
 import lombok.var;
 import state.MeetingState;
 import state.OrganizationState;
@@ -13,7 +12,6 @@ import util.FontData;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.lang.annotation.Target;
 import java.util.*;
 import java.util.List;
 
@@ -27,8 +25,7 @@ public class MeetingCreator extends JDialog{
     Box participantListView;
     Component memberPlaceHolder;
     Component participantPlaceHolder;
-
-    JPanel comboBox;
+    JPanel comboBoxPanel;
 
     List<Organization> organizations;
     List<Member> members;
@@ -49,6 +46,7 @@ public class MeetingCreator extends JDialog{
     void setListener() {
         setAddParticipantListener();
         setRemoveParticipantListener();
+        setChooseOrganizationListener();
     }
 
     void setAddParticipantListener() {
@@ -89,12 +87,19 @@ public class MeetingCreator extends JDialog{
         });
     }
 
+    void setChooseOrganizationListener() {
+        meetingState.addPropertyChangeListener(evt -> {
+            if (!Objects.equals(evt.getPropertyName(), "chooseOrganization")) { return; }
+            members = (List<Member>) evt.getNewValue();
+            memberListBuilder();
+        });
+    }
+
     Component panelBuilder() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBorder(new EmptyBorder(10,10,10,10));
         panel.setPreferredSize(new Dimension(800, 400));
-        panel.setBackground(Color.GRAY);
         panel.add(contentBuilder());
         return panel;
     }
@@ -106,19 +111,7 @@ public class MeetingCreator extends JDialog{
         row.add(memberSelector());
         row.add(Box.createHorizontalStrut(60));
         row.add(participantListBuilder());
-        row.setBackground(Color.PINK);
         return row;
-    }
-
-    void comboBoxBuilder() {
-        comboBox = new JPanel();
-        comboBox.setPreferredSize(new Dimension(360, 30));
-        comboBox.setLayout(new BorderLayout());
-        var label = new JLabel("Organization: ");
-        label.setBorder(new EmptyBorder(0,0,0,10));
-        label.setFont(FontData.BODY);
-        comboBox.add(label, BorderLayout.WEST);
-        comboBox.add(new TextField(), BorderLayout.CENTER);
     }
 
     Component memberSelector() {
@@ -126,9 +119,8 @@ public class MeetingCreator extends JDialog{
         panel.setPreferredSize(new Dimension(360, 380));
         panel.setLayout(new BorderLayout());
         comboBoxBuilder();
-        panel.add(comboBox, BorderLayout.NORTH);
+        panel.add(comboBoxPanel, BorderLayout.NORTH);
         memberListView = Box.createVerticalBox();
-        memberListView.setBackground(Color.DARK_GRAY);
         memberListView.add(new JPanel());
 
         var scrollPane = new JScrollPane(memberListView, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -139,6 +131,26 @@ public class MeetingCreator extends JDialog{
         memberListBuilder();
 
         return panel;
+    }
+
+    void comboBoxBuilder() {
+        comboBoxPanel = new JPanel();
+        comboBoxPanel.setPreferredSize(new Dimension(360, 30));
+        comboBoxPanel.setLayout(new BorderLayout());
+        var label = new JLabel("Organization: ");
+        label.setBorder(new EmptyBorder(0,0,0,10));
+        label.setFont(FontData.BODY);
+        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>());
+        for (Organization organization:
+                organizationState.getOrganizationsManaged()) {
+            comboBox.addItem(organization.getName());
+        }
+        comboBox.addItem("sss");
+        comboBox.addItem("123456");
+        comboBox.addActionListener(e -> meetingBloc.chooseOrganization((String) comboBox.getSelectedItem()));
+
+        comboBoxPanel.add(label, BorderLayout.WEST);
+        comboBoxPanel.add(comboBox, BorderLayout.CENTER);
     }
 
     void memberListBuilder() {
@@ -160,7 +172,6 @@ public class MeetingCreator extends JDialog{
         panel.setLayout(new BorderLayout());
 
         participantListView = Box.createVerticalBox();
-        participantListView.setBackground(Color.DARK_GRAY);
         participantListView.add(new JPanel());
         participantPlaceHolder = Box.createVerticalStrut(360);
         participantListView.add(participantPlaceHolder);
@@ -196,5 +207,7 @@ public class MeetingCreator extends JDialog{
 
         setListener();
         add(panelBuilder(), BorderLayout.CENTER);
+        //        TODO offline
+//        meetingBloc.chooseOrganization(organizations.get(0).getName());
     }
 }

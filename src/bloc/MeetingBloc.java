@@ -1,18 +1,25 @@
 package bloc;
 
 import api.RequestController;
+import entity.Organization;
 import state.GlobalState;
 import state.MeetingState;
+import state.OrganizationState;
+
+import java.util.Currency;
+import java.util.Objects;
 
 public class MeetingBloc extends Bloc {
     private static final MeetingBloc INSTANCE = new MeetingBloc();
     private final MeetingState state;
     private final GlobalState globalState;
+    private OrganizationState organizationState;
 
     private MeetingBloc() {
         super(MeetingState.getInstance());
         this.state = (MeetingState) super.state;
         globalState = GlobalState.getInstance();
+        organizationState = OrganizationState.getInstance();
     }
 
     public static MeetingBloc getInstance() { return INSTANCE; }
@@ -44,6 +51,22 @@ public class MeetingBloc extends Bloc {
 
     public void onRemoveParticipant(Integer account) {
         state.firePropertyChange("remove", null, account);
+    }
 
+    public void chooseOrganization(String organizationName) {
+        for (Organization organization:
+             organizationState.getOrganizationsManaged()) {
+            if (Objects.equals(organization.getName(), organizationName)) {
+                RequestController.organizationApi().member(organization.getCreator(), organization.getId(), (result, res, rsp) -> {
+                    System.out.println(result);
+                    if (result.getCode() == 200) {
+                        state.setCurrentOrganization(organization);
+                        state.firePropertyChange("chooseOrganization", null, result.getData());
+                    }
+                });
+                break;
+            }
+
+        }
     }
 }

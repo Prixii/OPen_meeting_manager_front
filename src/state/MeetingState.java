@@ -1,5 +1,6 @@
 package state;
 
+import entity.Organization;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -7,6 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class MeetingState extends State{
     private static final MeetingState INSTANCE = new MeetingState();
+    Organization currentOrganization;
 
     private MeetingState() {}
 
