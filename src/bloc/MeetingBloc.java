@@ -39,10 +39,11 @@ public class MeetingBloc extends Bloc {
     }
 
     public void onAddParticipant(Integer account) {
-
+        state.firePropertyChange("add", null, account);
     }
 
     public void onRemoveParticipant(Integer account) {
+        state.firePropertyChange("remove", null, account);
 
     }
 }
