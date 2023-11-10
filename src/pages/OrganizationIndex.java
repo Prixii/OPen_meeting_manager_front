@@ -1,4 +1,4 @@
-package pages.organization;
+package pages;
 
 import components.organization.OrganizationDetail;
 import components.organization.OrganizationOverView;

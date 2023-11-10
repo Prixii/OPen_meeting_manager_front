@@ -1,6 +1,6 @@
 import lombok.var;
-import pages.hello.Hello;
-import pages.navigator.Navigator;
+import pages.Hello;
+import pages.Navigator;
 import state.GlobalState;
 
 import javax.swing.*;
@@ -63,8 +63,8 @@ public class App {
 
     public static void main(String[] args) {
         App swingApp = new App();
-        swingApp.showHello();
-//        swingApp.showMain();
+//        swingApp.showHello();
+        swingApp.showMain();
     }
 
 }

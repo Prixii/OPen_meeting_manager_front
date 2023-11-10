@@ -1,4 +1,4 @@
-package pages.navigator;
+package pages;
 
 import components.navigator.NavigatorItem;
 import components.navigator.PageView;
@@ -14,7 +14,7 @@ public class Navigator extends JPanel {
         JPanel navigatorPanel = new JPanel();
 
         navigatorPanel.setPreferredSize(new Dimension(300, 700));
-        navigatorPanel.setBackground(Color.lightGray);
+        navigatorPanel.setBackground(Color.GRAY);
         navigatorPanel.add(new NavigatorItem());
 
         return navigatorPanel;

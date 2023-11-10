@@ -1,4 +1,4 @@
-package pages.hello;
+package pages;
 
 import components.hello.Login;
 import components.hello.Register;

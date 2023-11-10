@@ -1,4 +1,4 @@
-package pages.meeting;
+package pages;
 
 import api.Response.meeting.MeetingListResponse;
 import bloc.MeetingBloc;

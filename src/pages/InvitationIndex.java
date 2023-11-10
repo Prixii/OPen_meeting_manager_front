@@ -1,4 +1,4 @@
-package pages.invitation;
+package pages;
 
 import bloc.InvitationBloc;
 import bloc.OrganizationBloc;

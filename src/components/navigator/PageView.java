@@ -1,9 +1,9 @@
 package components.navigator;
 
 import bloc.NavigationBloc;
-import pages.invitation.InvitationIndex;
-import pages.meeting.MeetingIndex;
-import pages.organization.OrganizationIndex;
+import pages.InvitationIndex;
+import pages.MeetingIndex;
+import pages.OrganizationIndex;
 import entity.enums.PageIndex;
 import state.NavigationState;
 
