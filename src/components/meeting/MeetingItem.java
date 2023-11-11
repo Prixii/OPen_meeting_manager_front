@@ -33,6 +33,8 @@ public class MeetingItem extends JPanel {
         var row = Box.createHorizontalBox();
         row.setBorder(new EmptyBorder(5,0,5,0));
         row.add(meetingTitleBuilder());
+        row.add(Box.createHorizontalStrut(40));
+        row.add(buildTimeLabel());
         row.add(Box.createHorizontalGlue());
         if (meeting.belongTo(globalState.getUser().getId())){
             row.add(finishButtonBuilder());
@@ -41,6 +43,13 @@ public class MeetingItem extends JPanel {
             row.add(Box.createHorizontalStrut(20));
         }
         return row;
+    }
+
+    Component buildTimeLabel() {
+        var label = new Label(meeting.getStartTime() + " ~ " + meeting.getEndTime());
+        label.setFont(FontData.BODY);
+        label.setForeground(Color.gray);
+        return label;
     }
 
     Component meetingTitleBuilder() {
