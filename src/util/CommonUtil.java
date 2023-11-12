@@ -24,10 +24,4 @@ public class CommonUtil {
         return button;
     }
 
-    public static Component divider(Integer width, Integer height) {
-        var divider = new JPanel();
-        divider.setPreferredSize(new Dimension(width, height));
-        divider.setBackground(ColorData.DIVIDER);
-        return divider;
-    }
 }
