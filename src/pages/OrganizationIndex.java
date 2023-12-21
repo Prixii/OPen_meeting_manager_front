@@ -19,7 +19,6 @@ public class OrganizationIndex extends JPanel {
 
     void setToDetailListener() {
         organizationState.addPropertyChangeListener(evt -> {
-            System.out.println("change");
             if (!Objects.equals(evt.getPropertyName(), "toDetail")) { return; }
             layout.show(this,"Detail");
         });
@@ -27,7 +26,6 @@ public class OrganizationIndex extends JPanel {
 
     void setToOverViewListener() {
         organizationState.addPropertyChangeListener(evt -> {
-            System.out.println("change");
             if (!Objects.equals(evt.getPropertyName(), "toOverView")) { return; }
             layout.show(this,"OverView");
         });

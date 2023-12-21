@@ -15,6 +15,9 @@ public class App {
         setLoginStateListener();
     }
 
+    /**
+     * 登录成功的监听器
+     */
     void setLoginStateListener() {
         globalState.addPropertyChangeListener(evt -> {
             if (!Objects.equals(evt.getPropertyName(), "loginSucceed")) { return; }

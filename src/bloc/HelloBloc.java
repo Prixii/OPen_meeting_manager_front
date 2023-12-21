@@ -42,12 +42,16 @@ public class HelloBloc extends Bloc{
         });
     }
 
+    /**
+     * helloBloc 中的登录接口
+     * @param phone 手机号
+     * @param password 密码
+     */
     public void login(String phone, String password) {
         RequestController.accountApi().login(new LoginBody(phone, password), (result, req, res) -> {
             if (result.getCode() == 200) {
                 var response = result.getData();
                 globalBloc.onLoginSucceed(new Account(response.getId(),response.getName(),phone,password));
-
             }
         });
     }

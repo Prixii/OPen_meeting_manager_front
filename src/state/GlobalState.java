@@ -20,6 +20,7 @@ public class GlobalState extends State {
         user = new Account();
     }
 
-    public static GlobalState getInstance() { return INSTANCE; }
+    public static GlobalState getInstance() {
+        return INSTANCE; }
 
 }

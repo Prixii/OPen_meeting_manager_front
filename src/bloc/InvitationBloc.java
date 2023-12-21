@@ -66,3 +66,4 @@ public class InvitationBloc extends Bloc{
         });
     }
 }
+
